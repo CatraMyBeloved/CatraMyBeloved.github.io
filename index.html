@@ -160,6 +160,7 @@
     <nav>
         <a class="brand" href="#top">Ole Stein</a>
         <a href="#projects">Projects</a>
+        <a href="#other-projects">Other Work</a>
         <a href="#skills">Skills</a>
         <a href="#values">Things I Care About</a>
         <a href="#contact">Contact</a>
@@ -411,7 +412,7 @@
             if (!target) return;
             e.preventDefault();
             const y = target.getBoundingClientRect().top + window.scrollY - headerH() - 8;
-            window.scrollTo({ top: Math.max(0, y), behavior: 'small' });
+            window.scrollTo({ top: Math.max(0, y), behavior: 'smooth' });
             history.pushState(null, '', hash);
         });
     });
@@ -429,7 +430,7 @@
             }
         });
     }, { rootMargin: '-40% 0px -55% 0px', threshold: 0.01 });
-    ['projects','skills','values','contact'].forEach(id => {
+    ['projects','other-projects','skills','values','contact'].forEach(id => {
         const el = document.getElementById(id);
         if (el) observer.observe(el);
     });
