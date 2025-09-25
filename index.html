@@ -1,0 +1,450 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Ole Stein – Portfolio</title>
+    <meta name="description" content="Exploring natural and data sciences with curiosity, care, and kindness. Data analysis, geospatial work, and open, human-centered science." />
+    <meta name="color-scheme" content="light dark">
+    <meta name="theme-color" content="#ffffff">
+    <style>
+        /* Reset */
+        *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+        :root{
+            /* Coral + Amber theme tokens */
+            --bg1:#fff0f6; --bg2:#ffe8cc; /* background gradient stops */
+            --ink:#222; --ink-muted:#444; --muted:#6b6b6b;
+            --coral:#e03131; --amber:#fd7e14; --rose:#ffccd5; --peach:#ffe8cc; --border:#f1d8df;
+            --card:#ffffff; --shadow:0 10px 28px rgba(0,0,0,.12);
+            --r:20px; --r-lg:24px;
+            --focus:0 0 0 3px rgba(224,49,49,.25);
+        }
+        body{font-family:system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Cantarell,Noto Sans,"Helvetica Neue",Arial;color:var(--ink);background:linear-gradient(135deg,var(--bg1) 0%,var(--bg2) 100%);line-height:1.6}
+        a{text-decoration:none;color:inherit}
+
+        /* Header / Nav */
+        header{position:sticky;top:0;z-index:1000;background:rgba(255,255,255,.75);backdrop-filter:blur(8px);border-bottom:1px solid rgba(0,0,0,.08)}
+        nav{display:flex;gap:12px;align-items:center;padding:14px 24px;max-width:1100px;margin:0 auto}
+        .brand{margin-right:auto;font-weight:900;font-size:22px;color:var(--coral)}
+        nav a{padding:8px 12px;border-radius:10px;color:#333;font-weight:600}
+        nav a:hover,nav a.active{background:var(--rose);color:var(--coral)}
+        nav a:focus-visible{outline:none;box-shadow:var(--focus)}
+
+        /* Layout */
+        main{max-width:1100px;margin:0 auto;padding:24px}
+        section{padding:72px 0;scroll-margin-top:84px}
+        .section-title{font-size:28px;margin-bottom:10px;color:var(--coral);text-align:center}
+        .section-underline{height:6px;width:120px;margin:10px auto 24px;border-radius:999px;background:linear-gradient(90deg,var(--coral),var(--amber))}
+
+        /* Hero */
+        .hero{text-align:center}
+        .hero h1{font-size:60px;background:linear-gradient(90deg,var(--coral),var(--amber));-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:16px}
+        .hero p{max-width:70ch;margin:0 auto;font-size:18px;color:var(--ink-muted)}
+
+        /* Projects – bolder blocks */
+        .projects{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:24px}
+        .project{position:relative;overflow:hidden;border-radius:var(--r-lg);background:var(--card);box-shadow:var(--shadow);transition:transform .2s}
+        .project:hover{transform:translateY(-6px)}
+        .project::before{content:"";position:absolute;top:0;left:0;width:100%;height:10px;background:linear-gradient(90deg,var(--coral),var(--amber))}
+        .project-content{padding:20px;position:relative;z-index:1}
+        .project h3{margin-bottom:6px;color:var(--coral)}
+        .status{font-size:12px;font-weight:800;color:var(--amber);margin-left:6px;text-transform:uppercase;letter-spacing:.3px}
+        .chips{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0}
+        .chip{padding:6px 10px;border-radius:999px;background:var(--rose);font-size:12px;color:var(--coral);font-weight:700}
+        .actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:10px}
+        .btn{display:inline-block;padding:10px 14px;border-radius:10px;background:var(--coral);color:#fff;font-weight:800;border:1px solid transparent;cursor:pointer}
+        .btn:hover{background:var(--amber)}
+        .btn.secondary{background:#fff;color:var(--coral);border-color:var(--border)}
+        .btn.secondary:hover{background:var(--rose)}
+
+        /* Skills – bold columns with badges */
+        .skills-wrap{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:20px}
+        .skill-card{background:var(--card);border-radius:var(--r);box-shadow:var(--shadow);padding:18px}
+        .skill-card h4{color:var(--amber);margin-bottom:8px}
+        .skill-card ul{margin-left:18px}
+
+        /* Values – colorful panels */
+        .values{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:20px}
+        .value{background:var(--card);border-radius:var(--r);box-shadow:var(--shadow);padding:18px;transition:transform .2s}
+        .value:hover{transform:translateY(-4px)}
+        .value h4{color:var(--coral);margin-bottom:8px}
+
+        /* Footer / Contact */
+        footer{padding:36px;margin-top:40px;text-align:center;background:rgba(255,255,255,.65);backdrop-filter:blur(6px);border-top:1px solid rgba(0,0,0,.08)}
+        footer h2{margin-bottom:6px;color:var(--coral)}
+        .contact-list{list-style:none;display:grid;gap:6px;justify-content:center}
+        .link{color:var(--coral);text-decoration:underline;font-weight:700}
+        .tag{background:var(--rose);padding:6px 10px;border-radius:999px;color:var(--coral);font-weight:700}
+
+        /* Dialogs - Fixed centering and styling */
+        dialog{
+            border:none;
+            border-radius:12px;
+            max-width:760px;
+            width:96%;
+            padding:0;
+            background:#fff;
+            box-shadow:0 20px 50px rgba(0,0,0,.3);
+            position:fixed;
+            top:50%;
+            left:50%;
+            transform:translate(-50%, -50%);
+            max-height:80vh;
+        }
+        dialog::backdrop{
+            background:rgba(0,0,0,.5);
+            backdrop-filter:blur(2px);
+        }
+        dialog:not([open]){
+            display:none;
+        }
+        .dialog-head{
+            padding:20px 24px;
+            border-bottom:1px solid #eee;
+            display:flex;
+            justify-content:space-between;
+            align-items:center;
+            background:linear-gradient(90deg,var(--coral),var(--amber));
+            color:white;
+            border-radius:12px 12px 0 0;
+        }
+        .dialog-head h3{
+            margin:0;
+            font-size:20px;
+        }
+        .dialog-body{
+            padding:24px;
+            max-height:60vh;
+            overflow:auto;
+            line-height:1.7;
+            color:var(--ink);
+            background:#fff;
+        }
+        .dialog-body p{
+            margin-bottom:16px;
+            color:var(--ink);
+        }
+        .dialog-body p:last-child{
+            margin-bottom:0;
+        }
+        .icon-btn{
+            padding:8px 12px;
+            border-radius:8px;
+            border:1px solid rgba(255,255,255,.3);
+            background:rgba(255,255,255,.2);
+            color:white;
+            font-weight:700;
+            cursor:pointer;
+            transition:background .2s;
+        }
+        .icon-btn:hover{
+            background:rgba(255,255,255,.3);
+        }
+
+        /* Utilities */
+        .to-top{position:fixed;right:16px;bottom:16px;opacity:0;pointer-events:none;transition:.3s}
+        .to-top.show{opacity:1;pointer-events:auto}
+    </style>
+</head>
+<body>
+<header>
+    <nav>
+        <a class="brand" href="#top">Ole Stein</a>
+        <a href="#projects">Projects</a>
+        <a href="#skills">Skills</a>
+        <a href="#values">Things I Care About</a>
+        <a href="#contact">Contact</a>
+    </nav>
+</header>
+<main id="top">
+    <!-- HERO -->
+    <section class="hero">
+        <h1>Ole Stein</h1>
+        <p>Exploring natural and data sciences with curiosity, care, and kindness.</p>
+        <p>I'm endlessly curious — whether I'm building data tools, exploring natural sciences, or just following another Wikipedia rabbit hole. I'm also very social, rarely a day without friends. I care deeply about fairness, inclusiveness, and creating safe, welcoming spaces. Data science is how I turn curiosity into insights that matter.</p>
+    </section>
+
+    <!-- PROJECTS -->
+    <section id="projects">
+        <h2 class="section-title">Projects</h2>
+        <div class="section-underline"></div>
+        <div class="projects">
+            <article class="project">
+                <div class="project-content">
+                    <h3>Volcanic Recovery Analysis <span class="status">Finished</span></h3>
+                    <p>Used Sentinel imagery, NDVI indices, DEM data and timeseries clustering to study vegetation recovery on La Palma after the 2021 eruption. Also mapped lava-flow extent and recovery zones.</p>
+                    <div class="chips">
+                        <span class="chip">Python</span><span class="chip">pandas</span><span class="chip">numpy</span><span class="chip">scikit-learn</span><span class="chip">rasterio</span><span class="chip">geopandas</span>
+                    </div>
+                    <div class="actions">
+                        <a class="btn secondary" href="https://github.com/CatraMyBeloved/volcano-recover-analysis" target="_blank" rel="noopener">GitHub</a>
+                        <button class="btn" data-dialog="dlg-volcano">Read more</button>
+                    </div>
+                </div>
+            </article>
+
+            <article class="project">
+                <div class="project-content">
+                    <h3>Overwatch Esports Analysis App <span class="status">Finished</span></h3>
+                    <p>Shiny app transforming community spreadsheets into a relational database with dashboards, map and hero analysis, plus ML predictions using random forest, boosted trees, and logistic regression.</p>
+                    <div class="chips">
+                        <span class="chip">R</span><span class="chip">tidyverse</span><span class="chip">Shiny</span><span class="chip">tidymodels</span>
+                    </div>
+                    <div class="actions">
+                        <a class="btn secondary" href="https://catramybeloved.shinyapps.io/owcs_analysis/" target="_blank" rel="noopener">Live (when online)</a>
+                        <a class="btn secondary" href="https://github.com/CatraMyBeloved/owcs_analysis_app" target="_blank" rel="noopener">GitHub</a>
+                        <button class="btn" data-dialog="dlg-ow">Read more</button>
+                    </div>
+                </div>
+            </article>
+
+            <article class="project">
+                <div class="project-content">
+                    <h3>Arctic Ice Extent Forecasting <span class="status">In Progress</span></h3>
+                    <p>Combines NSIDC sea ice index with ERA5 reanalysis data in PostGIS and xarray. Building LSTM models for daily, weekly, monthly forecasting; includes tiered aggregation and Parquet feature store.</p>
+                    <div class="chips">
+                        <span class="chip">Python</span><span class="chip">xarray</span><span class="chip">PostgreSQL/PostGIS</span><span class="chip">PyTorch</span>
+                    </div>
+                    <div class="actions">
+                        <a class="btn secondary" href="https://github.com/CatraMyBeloved/arctic-ice-extent" target="_blank" rel="noopener">GitHub</a>
+                        <button class="btn" data-dialog="dlg-ice">Read more</button>
+                    </div>
+                </div>
+            </article>
+        </div>
+    </section>
+
+    <!-- SKILLS -->
+    <section id="skills">
+        <h2 class="section-title">Skills</h2>
+        <div class="section-underline"></div>
+        <div class="skills-wrap">
+            <div class="skill-card">
+                <h4>Programming & Query Languages</h4>
+                <ul>
+                    <li>Python</li>
+                    <li>R</li>
+                    <li>SQL (PostgreSQL, SQLite)</li>
+                </ul>
+            </div>
+            <div class="skill-card">
+                <h4>Data Science & Machine Learning</h4>
+                <ul>
+                    <li>Data analysis & visualization</li>
+                    <li>Classical ML (random forest, boosted trees, clustering, regression)</li>
+                    <li>Deep learning (PyTorch, LSTMs)</li>
+                    <li>Time‑series analysis</li>
+                    <li>Statistics & EDA</li>
+                </ul>
+            </div>
+            <div class="skill-card">
+                <h4>Geospatial Analysis</h4>
+                <ul>
+                    <li>Raster & vector processing (rasterio, geopandas)</li>
+                    <li>Spatial databases (PostGIS)</li>
+                    <li>Remote sensing (Sentinel imagery, NDVI, DEMs)</li>
+                    <li>QGIS</li>
+                </ul>
+            </div>
+            <div class="skill-card">
+                <h4>Visualization & Applications</h4>
+                <ul>
+                    <li>R Shiny (interactive dashboards)</li>
+                    <li>ggplot2, matplotlib, seaborn</li>
+                    <li>Streamlit</li>
+                </ul>
+            </div>
+            <div class="skill-card">
+                <h4>Databases & Infrastructure</h4>
+                <ul>
+                    <li>PostgreSQL, SQLite</li>
+                    <li>AWS (RDS, S3)</li>
+                    <li>Docker (basic)</li>
+                </ul>
+            </div>
+            <div class="skill-card">
+                <h4>Other Tools & Practices</h4>
+                <ul>
+                    <li>Git & version control</li>
+                    <li>Linux systems</li>
+                    <li>Web scraping (custom pipelines)</li>
+                    <li>Open‑source collaboration</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- VALUES -->
+    <section id="values">
+        <h2 class="section-title">The Things I Care About</h2>
+        <div class="section-underline"></div>
+        <div class="values">
+            <article class="value"><h4>Curiosity</h4><p>Asking questions, exploring new ideas, and learning across disciplines is at the heart of everything I do. Curiosity drives me — in science and in life.</p></article>
+            <article class="value"><h4>Community</h4><p>Despite the daunting — and at times seemingly impossible — challenges of today's world, I believe our only chance to fix them is together. Collaboration, openness, and shared effort matter more than individual achievement.</p></article>
+            <article class="value"><h4>Kindness</h4><p>Good work only happens when people feel safe and welcome. Facing challenges together requires trust, empathy, and respect. Real impact comes not from force, but from kindness and cooperation.</p></article>
+            <article class="value"><h4>Science</h4><p>We might never fully understand the world, but every step toward deeper knowledge brings us closer to helping each other and our planet. Data is one tool to make that possible.</p></article>
+            <article class="value"><h4>Impact</h4><p>I want to use my skills where they make a difference — in research, communities, or creative projects — so that what I build contributes to something larger than myself.</p></article>
+        </div>
+    </section>
+</main>
+
+<!-- CONTACT / FOOTER -->
+<footer id="contact">
+    <h2>Contact</h2>
+    <p>If you feel like contacting me, you can find me here — I love talking about all things data, science, or art.</p>
+    <ul class="contact-list">
+        <li><strong>Email:</strong> <a class="link" href="mailto:ole.stein.ctr@outlook.com">ole.stein.ctr@outlook.com</a></li>
+        <li><strong>Phone:</strong> <a class="link" href="tel:+4917647354285">+49 176 4735 4285</a></li>
+        <li><strong>Discord:</strong> <span class="tag">derstein</span></li>
+        <li><strong>GitHub:</strong> <a class="link" href="https://github.com/CatraMyBeloved" target="_blank" rel="noopener">github.com/CatraMyBeloved</a></li>
+        <li><strong>CV:</strong> <span class="muted">Coming soon</span></li>
+    </ul>
+    <p style="margin-top:12px">© <span id="y"></span> Ole Stein</p>
+</footer>
+
+<!-- EXPANDED DIALOGS (details) -->
+<dialog id="dlg-volcano" aria-labelledby="dlg-volcano-title">
+    <div class="dialog-head">
+        <h3 id="dlg-volcano-title">Volcanic Recovery Analysis</h3>
+        <button class="icon-btn" data-close>✕ Close</button>
+    </div>
+    <div class="dialog-body">
+        <p>I began this project after discovering the Sentinel satellite missions and wanting to go beyond surface-level tutorials. Rather than repeating the usual "first remote sensing projects," I looked for something dramatic and meaningful — and landed on the 2021 La Palma volcanic eruption.</p>
+        <p>Starting with raw Sentinel imagery, I dove into rasterio and other geospatial tools, experimenting with indices like NDVI, and gradually shaping the project into a structured analysis. A particularly rewarding challenge came when I introduced DEM data: different formats, mismatched resolutions, and alignment issues made integration tricky. Building a reprojection workflow and finally seeing vegetation indices plotted in 3D alongside elevation was a breakthrough moment.</p>
+        <p>Beyond clustering vegetation "fingerprints," the toolset also supports mapping lava flows and comparing recovery across impact zones. It's not a formal paper, but a foundation others can build on — and it took me from zero geospatial experience to a working ecological workflow.</p>
+    </div>
+</dialog>
+
+<dialog id="dlg-ow" aria-labelledby="dlg-ow-title">
+    <div class="dialog-head">
+        <h3 id="dlg-ow-title">Overwatch Esports Analysis App</h3>
+        <button class="icon-btn" data-close>✕ Close</button>
+    </div>
+    <div class="dialog-body">
+        <p>I've played Overwatch since its release, and at times competitively, so I naturally became fascinated with the esports scene. During university, I discovered the Overwatch League's dedicated statistics site — only to see it shut down when the league ended. Its replacement, the Overwatch Champions Series (OWCS), lacked anything close to the depth of the original stats lab. As a data enthusiast, I was disappointed, but also inspired: if the community didn't have a proper analytics platform, I could build one.</p>
+        <p>I started by scraping community spreadsheets and transforming them into a relational database on AWS. Using R and Shiny, I built dashboards, team and map breakdowns, hero ban and interaction analysis, and predictive modules using random forests, boosted trees, and logistic regression via tidymodels. While it never had the full polish of a professional product, my domain knowledge and stack enabled insights that didn't exist elsewhere.</p>
+        <p>The project became surprisingly impactful. Streamers, coaches, and YouTubers used it; I even developed a small reputation in the esports community. At one point, a professional coach reached out for advice on integrating data-driven methods into training. Beyond the technical challenge, this was my first experience of building something others genuinely relied on.</p>
+    </div>
+</dialog>
+
+<dialog id="dlg-ice" aria-labelledby="dlg-ice-title">
+    <div class="dialog-head">
+        <h3 id="dlg-ice-title">Arctic Ice Extent Forecasting</h3>
+        <button class="icon-btn" data-close>✕ Close</button>
+    </div>
+    <div class="dialog-body">
+        <p>I've long been fascinated by the idea of working at a research institute, contributing to humanity's understanding of the natural world. The Alfred Wegener Institute (AWI) in Germany is a particular inspiration. I was accepted for an internship with their data science support group — even though I couldn't attend due to scheduling, it confirmed that this path is possible and worth preparing for.</p>
+        <p>This project is built around NSIDC sea ice and ERA5 reanalysis data. The pipeline defines regions in PostGIS, aggregates climate variables over pan‑Arctic, basin/sea and edge‑band tiers, stores features in Parquet and trains sequence models (LSTMs) with daily, weekly and monthly horizons, alongside baseline persistence/climatology.</p>
+        <p>It's an ongoing effort that represents a technical step beyond my earlier projects and a concrete move toward research‑aligned data science.</p>
+    </div>
+</dialog>
+
+<script>
+    // Current year
+    document.getElementById('y').textContent = new Date().getFullYear();
+
+    // Back to top button
+    const toTop = document.createElement('button');
+    toTop.textContent = '↑ Top';
+    toTop.className = 'btn to-top';
+    document.body.appendChild(toTop);
+    window.addEventListener('scroll', () => {
+        if (window.scrollY > 600) toTop.classList.add('show'); else toTop.classList.remove('show');
+    });
+    toTop.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+
+    // Smooth anchor scrolling with header offset
+    const headerEl = document.querySelector('header');
+    const headerH = () => (headerEl ? headerEl.offsetHeight : 0);
+    document.querySelectorAll('nav a[href^="#"]').forEach(a => {
+        a.addEventListener('click', (e) => {
+            const hash = a.getAttribute('href');
+            if (!hash || hash.length < 2) return;
+            const target = document.querySelector(hash);
+            if (!target) return;
+            e.preventDefault();
+            const y = target.getBoundingClientRect().top + window.scrollY - headerH() - 8;
+            window.scrollTo({ top: Math.max(0, y), behavior: 'smooth' });
+            history.pushState(null, '', hash);
+        });
+    });
+
+    // Nav active highlighting while scrolling
+    const navMap = Array.from(document.querySelectorAll('nav a[href^="#"]'))
+        .reduce((m, a) => (m.set(a.getAttribute('href'), a), m), new Map());
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            const id = '#' + entry.target.id;
+            const link = navMap.get(id);
+            if (link) {
+                if (entry.isIntersecting) link.classList.add('active');
+                else link.classList.remove('active');
+            }
+        });
+    }, { rootMargin: '-40% 0px -55% 0px', threshold: 0.01 });
+    ['projects','skills','values','contact'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) observer.observe(el);
+    });
+
+    // Enhanced dialog handling
+    document.addEventListener('DOMContentLoaded', function() {
+        // Open dialog
+        document.querySelectorAll('[data-dialog]').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                e.preventDefault();
+                const dialogId = btn.getAttribute('data-dialog');
+                const dialog = document.getElementById(dialogId);
+
+                if (dialog) {
+                    dialog.showModal();
+                    document.body.style.overflow = 'hidden';
+
+                    // Focus the close button
+                    const closeBtn = dialog.querySelector('[data-close]');
+                    if (closeBtn) closeBtn.focus();
+
+                    // Set up one-time close handler
+                    const handleClose = () => {
+                        document.body.style.overflow = '';
+                        btn.focus(); // Return focus to trigger button
+                        dialog.removeEventListener('close', handleClose);
+                    };
+                    dialog.addEventListener('close', handleClose);
+                }
+            });
+        });
+
+        // Close dialog buttons
+        document.querySelectorAll('[data-close]').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const dialog = btn.closest('dialog');
+                if (dialog) dialog.close();
+            });
+        });
+
+        // Close on backdrop click
+        document.querySelectorAll('dialog').forEach(dialog => {
+            dialog.addEventListener('click', (e) => {
+                const rect = dialog.getBoundingClientRect();
+                const isInDialog = (
+                    rect.top <= e.clientY && e.clientY <= rect.top + rect.height &&
+                    rect.left <= e.clientX && e.clientX <= rect.left + rect.width
+                );
+                if (!isInDialog) {
+                    dialog.close();
+                }
+            });
+        });
+
+        // Keyboard handling
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                const openDialog = document.querySelector('dialog[open]');
+                if (openDialog) openDialog.close();
+            }
+        });
+    });
+</script>
+</body>
+</html>
