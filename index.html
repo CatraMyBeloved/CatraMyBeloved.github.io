@@ -57,6 +57,15 @@
         .btn.secondary{background:#fff;color:var(--coral);border-color:var(--border)}
         .btn.secondary:hover{background:var(--rose)}
 
+        /* Small Projects - Compact cards */
+        .small-projects{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px}
+        .small-project{background:var(--card);border-radius:var(--r);box-shadow:0 4px 12px rgba(0,0,0,.08);padding:16px;transition:transform .2s;border-left:4px solid var(--coral)}
+        .small-project:hover{transform:translateY(-3px)}
+        .small-project h4{color:var(--coral);margin-bottom:6px;font-size:16px}
+        .small-project p{font-size:14px;color:var(--ink-muted);line-height:1.5}
+        .small-project .chips{margin:6px 0 0 0}
+        .small-project .chip{font-size:10px;padding:4px 8px}
+
         /* Skills – bold columns with badges */
         .skills-wrap{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:20px}
         .skill-card{background:var(--card);border-radius:var(--r);box-shadow:var(--shadow);padding:18px}
@@ -161,7 +170,7 @@
     <section class="hero">
         <h1>Ole Stein</h1>
         <p>Exploring natural and data sciences with curiosity, care, and kindness.</p>
-        <p>I'm endlessly curious — whether I'm building data tools, exploring natural sciences, or just following another Wikipedia rabbit hole. I'm also very social, and rarely spend a day without meeting friends. I care deeply about fairness, inclusiveness, and creating safe, welcoming spaces. Data science is how I turn curiosity into insights that matter.</p>
+        <p>I'm endlessly curious – whether I'm building data tools, exploring natural sciences, or just following another Wikipedia rabbit hole. I'm also very social, and rarely spend a day without meeting friends. I care deeply about fairness, inclusiveness, and creating safe, welcoming spaces. Data science is how I turn curiosity into insights that matter.</p>
     </section>
 
     <!-- PROJECTS -->
@@ -208,6 +217,45 @@
                         <a class="btn secondary" href="https://github.com/CatraMyBeloved/arctic-ice-extent" target="_blank" rel="noopener">GitHub</a>
                         <button class="btn" data-dialog="dlg-ice">Read more</button>
                     </div>
+                </div>
+            </article>
+        </div>
+    </section>
+
+    <!-- SMALL PROJECTS -->
+    <section id="other-projects">
+        <h2 class="section-title">Other Work</h2>
+        <div class="section-underline"></div>
+        <div class="small-projects">
+            <article class="small-project">
+                <h4>Twitch Prediction Bot</h4>
+                <p>Real-time ML model deployment with ensemble methods (Random Forest, Neural Networks) achieving 89% accuracy on match predictions. Features live chat integration and fuzzy string matching.</p>
+                <div class="chips">
+                    <span class="chip">Python</span><span class="chip">scikit-learn</span><span class="chip">TwitchIO</span><span class="chip">SQLite</span>
+                </div>
+            </article>
+
+            <article class="small-project">
+                <h4>Team Balancing System</h4>
+                <p>Priority-weighted player selection algorithm with Streamlit interface and persistent statistics tracking. Features role-flexible queueing and automated game logging.</p>
+                <div class="chips">
+                    <span class="chip">Python</span><span class="chip">Streamlit</span><span class="chip">pandas</span><span class="chip">SQLite</span>
+                </div>
+            </article>
+
+            <article class="small-project">
+                <h4>Monte Carlo Ranking Analysis</h4>
+                <p>Mathematical simulation using numba-optimized random walks to analyze ranking system dynamics. Ran 10M+ simulations to study climb probability in competitive environments.</p>
+                <div class="chips">
+                    <span class="chip">Python</span><span class="chip">numba</span><span class="chip">matplotlib</span><span class="chip">numpy</span>
+                </div>
+            </article>
+
+            <article class="small-project">
+                <h4>Esports Data Pipeline</h4>
+                <p>End-to-end data pipeline from FACEIT API through statistical analysis. Features database design, API integration, and role-specific performance modeling with custom value functions.</p>
+                <div class="chips">
+                    <span class="chip">Python</span><span class="chip">SQLite</span><span class="chip">pandas</span><span class="chip">requests</span>
                 </div>
             </article>
         </div>
@@ -278,11 +326,11 @@
         <h2 class="section-title">The Things I Care About</h2>
         <div class="section-underline"></div>
         <div class="values">
-            <article class="value"><h4>Curiosity</h4><p>Asking questions, exploring new ideas, and learning across disciplines is at the heart of everything I do. Curiosity drives me — in science and in life.</p></article>
-            <article class="value"><h4>Community</h4><p>Despite the daunting — and at times seemingly impossible — challenges of today's world, I believe our only chance to fix them is together. Collaboration, openness, and shared effort matter more than individual achievement.</p></article>
+            <article class="value"><h4>Curiosity</h4><p>Asking questions, exploring new ideas, and learning across disciplines is at the heart of everything I do. Curiosity drives me – in science and in life.</p></article>
+            <article class="value"><h4>Community</h4><p>Despite the daunting – and at times seemingly impossible – challenges of today's world, I believe our only chance to fix them is together. Collaboration, openness, and shared effort matter more than individual achievement.</p></article>
             <article class="value"><h4>Kindness</h4><p>Good work only happens when people feel safe and welcome. Facing challenges together requires trust, empathy, and respect. Real impact comes not from force, but from kindness and cooperation.</p></article>
             <article class="value"><h4>Science</h4><p>We might never fully understand the world, but every step toward deeper knowledge brings us closer to helping each other and our planet. Data is one tool to make that possible.</p></article>
-            <article class="value"><h4>Impact</h4><p>I want to use my skills where they make a difference — in research, communities, or creative projects — so that what I build contributes to something larger than myself.</p></article>
+            <article class="value"><h4>Impact</h4><p>I want to use my skills where they make a difference – in research, communities, or creative projects – so that what I build contributes to something larger than myself.</p></article>
         </div>
     </section>
 </main>
@@ -290,7 +338,7 @@
 <!-- CONTACT / FOOTER -->
 <footer id="contact">
     <h2>Contact</h2>
-    <p>If you feel like contacting me, you can find me here — I love talking about all things data, science, or art.</p>
+    <p>If you feel like contacting me, you can find me here – I love talking about all things data, science, or art.</p>
     <ul class="contact-list">
         <li><strong>Email:</strong> <a class="link" href="mailto:ole.stein.ctr@outlook.com">ole.stein.ctr@outlook.com</a></li>
         <li><strong>Phone:</strong> <a class="link" href="tel:+4917647354285">+49 176 4735 4285</a></li>
@@ -308,9 +356,9 @@
         <button class="icon-btn" data-close>✕ Close</button>
     </div>
     <div class="dialog-body">
-        <p>I began this project after discovering the Sentinel satellite missions and wanting to go beyond surface-level tutorials. Rather than repeating the usual "first remote sensing projects," I looked for something dramatic and meaningful — and landed on the 2021 La Palma volcanic eruption.</p>
+        <p>I began this project after discovering the Sentinel satellite missions and wanting to go beyond surface-level tutorials. Rather than repeating the usual "first remote sensing projects," I looked for something dramatic and meaningful – and landed on the 2021 La Palma volcanic eruption.</p>
         <p>Starting with raw Sentinel imagery, I dove into rasterio and other geospatial tools, experimenting with indices like NDVI, and gradually shaping the project into a structured analysis. A particularly rewarding challenge came when I introduced DEM data: different formats, mismatched resolutions, and alignment issues made integration tricky. Building a reprojection workflow and finally seeing vegetation indices plotted in 3D alongside elevation was a breakthrough moment.</p>
-        <p>Beyond clustering vegetation "fingerprints," the toolset also supports mapping lava flows and comparing recovery across impact zones. It's not a formal paper, but a foundation others can build on — and it took me from zero geospatial experience to a working ecological workflow.</p>
+        <p>Beyond clustering vegetation "fingerprints," the toolset also supports mapping lava flows and comparing recovery across impact zones. It's not a formal paper, but a foundation others can build on – and it took me from zero geospatial experience to a working ecological workflow.</p>
     </div>
 </dialog>
 
@@ -320,7 +368,7 @@
         <button class="icon-btn" data-close>✕ Close</button>
     </div>
     <div class="dialog-body">
-        <p>I've played Overwatch since its release, and at times competitively, so I naturally became fascinated with the esports scene. During university, I discovered the Overwatch League's dedicated statistics site — only to see it shut down when the league ended. Its replacement, the Overwatch Champions Series (OWCS), lacked anything close to the depth of the original stats lab. As a data enthusiast, I was disappointed, but also inspired: if the community didn't have a proper analytics platform, I could build one.</p>
+        <p>I've played Overwatch since its release, and at times competitively, so I naturally became fascinated with the esports scene. During university, I discovered the Overwatch League's dedicated statistics site – only to see it shut down when the league ended. Its replacement, the Overwatch Champions Series (OWCS), lacked anything close to the depth of the original stats lab. As a data enthusiast, I was disappointed, but also inspired: if the community didn't have a proper analytics platform, I could build one.</p>
         <p>I started by scraping community spreadsheets and transforming them into a relational database on AWS. Using R and Shiny, I built dashboards, team and map breakdowns, hero ban and interaction analysis, and predictive modules using random forests, boosted trees, and logistic regression via tidymodels. While it never had the full polish of a professional product, my domain knowledge and stack enabled insights that didn't exist elsewhere.</p>
         <p>The project became surprisingly impactful. Streamers, coaches, and YouTubers used it; I even developed a small reputation in the esports community. At one point, a professional coach reached out for advice on integrating data-driven methods into training. Beyond the technical challenge, this was my first experience of building something others genuinely relied on.</p>
     </div>
@@ -332,7 +380,7 @@
         <button class="icon-btn" data-close>✕ Close</button>
     </div>
     <div class="dialog-body">
-        <p>I've long been fascinated by the idea of working at a research institute, contributing to humanity's understanding of the natural world. The Alfred Wegener Institute (AWI) in Germany is a particular inspiration. I was accepted for an internship with their data science support group — even though I couldn't attend due to scheduling, it confirmed that this path is possible and worth preparing for.</p>
+        <p>I've long been fascinated by the idea of working at a research institute, contributing to humanity's understanding of the natural world. The Alfred Wegener Institute (AWI) in Germany is a particular inspiration. I was accepted for an internship with their data science support group – even though I couldn't attend due to scheduling, it confirmed that this path is possible and worth preparing for.</p>
         <p>This project is built around NSIDC sea ice and ERA5 reanalysis data. The pipeline defines regions in PostGIS, aggregates climate variables over pan‑Arctic, basin/sea and edge‑band tiers, stores features in Parquet and trains sequence models (LSTMs) with daily, weekly and monthly horizons, alongside baseline persistence/climatology.</p>
         <p>It's an ongoing effort that represents a technical step beyond my earlier projects and a concrete move toward research‑aligned data science.</p>
     </div>
@@ -363,7 +411,7 @@
             if (!target) return;
             e.preventDefault();
             const y = target.getBoundingClientRect().top + window.scrollY - headerH() - 8;
-            window.scrollTo({ top: Math.max(0, y), behavior: 'smooth' });
+            window.scrollTo({ top: Math.max(0, y), behavior: 'small' });
             history.pushState(null, '', hash);
         });
     });
