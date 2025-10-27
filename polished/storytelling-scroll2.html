@@ -1,0 +1,1113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <title>Ole Stein – A Data Science Journey</title>
+    <link href="https://googleapis.com" rel="preconnect">
+    <link crossorigin href="https://gstatic.com" rel="preconnect">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --coral: #e03131;
+            --coral-light: #fa5252;
+            --amber: #fd7e14;
+            --dark-green: #2d6a4f;
+            --sage: #52b788;
+            --off-white: #fafafa;
+            --warm-gray: #868e96;
+            --text-dark: #222;
+            --spacing-unit: 8px;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            color: var(--text-dark);
+            background: var(--off-white);
+            line-height: 1.7;
+            overflow-x: hidden;
+        }
+
+        /* Chapter Navigation */
+        .chapter-nav {
+            position: fixed;
+            right: 40px;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .chapter-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: #ccc;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+        }
+
+        .chapter-dot:hover {
+            background: var(--warm-gray);
+            transform: scale(1.2);
+        }
+
+        .chapter-dot.active {
+            background: var(--coral);
+            width: 32px;
+            border-radius: 6px;
+        }
+
+        .chapter-dot::after {
+            content: attr(data-label);
+            position: absolute;
+            right: 24px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: var(--text-dark);
+            color: white;
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 13px;
+            white-space: nowrap;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s;
+        }
+
+        .chapter-dot:hover::after {
+            opacity: 1;
+        }
+
+        /* Story Sections */
+        .story-section {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 80px 40px;
+            position: relative;
+            opacity: 0;
+            transform: translateY(80px);
+            transition: opacity 1.2s cubic-bezier(0.4, 0, 0.2, 1),
+            transform 1.2s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .story-section.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Hero Section */
+        .hero-section {
+            background: linear-gradient(135deg, var(--coral) 0%, var(--amber) 100%);
+            color: white;
+            text-align: center;
+            flex-direction: column;
+        }
+
+        .hero-section h1 {
+            font-size: clamp(48px, 8vw, 96px);
+            font-weight: 700;
+            line-height: 1.1;
+            margin-bottom: 32px;
+            letter-spacing: -0.02em;
+        }
+
+        .hero-section p {
+            font-size: clamp(20px, 3vw, 28px);
+            max-width: 50ch;
+            margin: 0 auto;
+            opacity: 0.95;
+            font-weight: 300;
+            line-height: 1.6;
+        }
+
+        .scroll-indicator {
+            position: absolute;
+            bottom: 60px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 40px;
+            animation: bounce 2.5s ease-in-out infinite;
+            cursor: pointer;
+        }
+
+        @keyframes bounce {
+            0%, 100% {
+                transform: translateX(-50%) translateY(0);
+            }
+            50% {
+                transform: translateX(-50%) translateY(-16px);
+            }
+        }
+
+        /* Chapter Container */
+        .chapter {
+            max-width: 1100px;
+            width: 100%;
+        }
+
+        .chapter h2 {
+            font-size: clamp(36px, 5vw, 64px);
+            font-weight: 700;
+            margin-bottom: 40px;
+            color: var(--coral);
+            line-height: 1.2;
+            letter-spacing: -0.02em;
+        }
+
+        .chapter p {
+            font-size: clamp(18px, 2.5vw, 24px);
+            line-height: 1.8;
+            margin-bottom: 28px;
+            max-width: 75ch;
+            color: var(--text-dark);
+        }
+
+        .chapter-label {
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--warm-gray);
+            margin-bottom: 16px;
+            font-weight: 600;
+        }
+
+        /* Split Layout Sections */
+        .split-section {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 80px;
+            align-items: center;
+            max-width: 1400px;
+            width: 100%;
+        }
+
+        .split-visual {
+            background: linear-gradient(135deg, var(--coral) 0%, var(--amber) 100%);
+            border-radius: 24px;
+            padding: 80px;
+            color: white;
+            text-align: center;
+            min-height: 500px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: clamp(24px, 3vw, 40px);
+            font-weight: 700;
+            line-height: 1.4;
+            box-shadow: 0 20px 60px rgba(224, 49, 49, 0.3);
+        }
+
+        .split-text h2 {
+            font-size: clamp(32px, 4.5vw, 56px);
+            color: var(--coral);
+            margin-bottom: 32px;
+            line-height: 1.2;
+        }
+
+        .split-text p {
+            font-size: clamp(17px, 2.2vw, 22px);
+            line-height: 1.8;
+            margin-bottom: 24px;
+        }
+
+        /* Project Showcase Section */
+        .project-showcase {
+            background: linear-gradient(to bottom, #fff 0%, #f8f9fa 100%);
+            padding: 120px 40px;
+        }
+
+        .showcase-header {
+            text-align: center;
+            margin-bottom: 80px;
+        }
+
+        .showcase-header h2 {
+            font-size: clamp(40px, 6vw, 72px);
+            color: var(--coral);
+            margin-bottom: 24px;
+            font-weight: 700;
+        }
+
+        .showcase-header .chapter-label {
+            margin-bottom: 12px;
+        }
+
+        .project-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+            gap: 48px;
+            max-width: 1400px;
+            margin: 0 auto 80px;
+        }
+
+        .project-card {
+            position: relative;
+            perspective: 1400px;
+            min-height: 500px;
+        }
+
+        .project-card .card-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            min-height: 500px;
+            transform-style: preserve-3d;
+            transition: transform 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .project-card .card-face {
+            position: absolute;
+            inset: 0;
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
+            border: 1px solid rgba(0, 0, 0, 0.05);
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            backface-visibility: hidden;
+        }
+
+        .project-card .card-front {
+            color: var(--text-dark);
+        }
+
+        .project-card .card-back {
+            transform: rotateY(180deg);
+            color: #495057;
+            overflow: hidden;
+        }
+
+        .project-card .card-back-header {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .project-card .card-back-content {
+            flex: 1;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            padding-right: 8px;
+        }
+
+        .project-card .card-back h3 {
+            font-size: 22px;
+        }
+
+        .project-card .card-back-content h4 {
+            font-size: 17px;
+            font-weight: 600;
+            color: var(--coral);
+        }
+
+        .project-card .card-back-content ul {
+            padding-left: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .project-card .card-back-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 8px;
+        }
+
+        .project-card.flipped .card-inner {
+            transform: rotateY(180deg);
+        }
+
+        .project-card:hover:not(.flipped) .card-front {
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.12);
+        }
+
+        .project-card h3 {
+            font-size: 26px;
+            color: var(--coral);
+            margin: 0;
+            font-weight: 600;
+        }
+
+        .project-card p {
+            font-size: 16px;
+            line-height: 1.7;
+            color: #495057;
+            margin: 0;
+        }
+
+        .project-status {
+            display: inline-block;
+            padding: 6px 14px;
+            background: var(--off-white);
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--warm-gray);
+            margin-bottom: 16px;
+        }
+
+        .project-status.in-progress {
+            background: #fff3bf;
+            color: #a16207;
+        }
+
+        .project-status.complete {
+            background: #d3f9d8;
+            color: #2b8a3e;
+        }
+
+        .tech-stack {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 20px;
+        }
+
+        .tech-chip {
+            padding: 6px 14px;
+            background: linear-gradient(135deg, var(--coral) 0%, var(--amber) 100%);
+            color: white;
+            border-radius: 16px;
+            font-size: 13px;
+            font-weight: 500;
+        }
+
+        .learn-more {
+            color: var(--coral);
+            font-weight: 600;
+            font-size: 15px;
+            margin-top: auto;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: gap 0.3s;
+            background: none;
+            border: none;
+            padding: 0;
+            cursor: pointer;
+            font-family: inherit;
+        }
+
+        .learn-more:hover {
+            gap: 12px;
+        }
+
+        .learn-more::after {
+            content: '→';
+            font-size: 18px;
+        }
+
+        .back-link {
+            color: var(--coral);
+            font-weight: 600;
+            text-decoration: none;
+        }
+
+        .back-link:hover {
+            text-decoration: underline;
+        }
+
+        .flip-back {
+            border: 1px solid rgba(224, 49, 49, 0.3);
+            background: white;
+            color: var(--coral);
+            font-weight: 600;
+            padding: 10px 22px;
+            border-radius: 999px;
+            cursor: pointer;
+            transition: background 0.3s, color 0.3s;
+        }
+
+        .flip-back:hover {
+            background: var(--coral);
+            color: white;
+        }
+
+        /* Small Projects */
+        .small-projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 32px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .small-project {
+            background: white;
+            border-radius: 16px;
+            padding: 32px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+            transition: transform 0.3s;
+        }
+
+        .small-project:hover {
+            transform: translateY(-4px);
+        }
+
+        .small-project h4 {
+            font-size: 20px;
+            color: var(--text-dark);
+            margin-bottom: 12px;
+            font-weight: 600;
+        }
+
+        .small-project p {
+            font-size: 15px;
+            line-height: 1.6;
+            color: #495057;
+            margin-bottom: 16px;
+        }
+
+        /* Skills Section */
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 32px;
+            max-width: 1200px;
+        }
+
+        .skill-category h3 {
+            font-size: 20px;
+            color: var(--coral);
+            margin-bottom: 16px;
+            font-weight: 600;
+        }
+
+        .skill-list {
+            list-style: none;
+        }
+
+        .skill-list li {
+            padding: 10px 0;
+            font-size: 16px;
+            color: var(--text-dark);
+            border-bottom: 1px solid #e9ecef;
+        }
+
+        .skill-list li:last-child {
+            border-bottom: none;
+        }
+
+        /* Values Section */
+        .values-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 40px;
+            max-width: 1200px;
+        }
+
+        .value-item {
+            text-align: center;
+        }
+
+        .value-icon {
+            font-size: 48px;
+            margin-bottom: 20px;
+        }
+
+        .value-item h3 {
+            font-size: 22px;
+            color: var(--coral);
+            margin-bottom: 12px;
+            font-weight: 600;
+        }
+
+        .value-item p {
+            font-size: 15px;
+            line-height: 1.7;
+            color: #495057;
+        }
+
+        /* Final CTA Section */
+        .final-cta {
+            background: linear-gradient(135deg, var(--dark-green) 0%, var(--sage) 100%);
+            color: white;
+            text-align: center;
+            flex-direction: column;
+        }
+
+        .final-cta h2 {
+            font-size: clamp(40px, 6vw, 72px);
+            margin-bottom: 32px;
+            color: white;
+        }
+
+        .final-cta p {
+            font-size: clamp(18px, 2.5vw, 24px);
+            margin-bottom: 48px;
+            opacity: 0.95;
+            max-width: 60ch;
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .cta-btn {
+            display: inline-block;
+            padding: 18px 40px;
+            background: white;
+            color: var(--dark-green);
+            text-decoration: none;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 18px;
+            transition: transform 0.3s, box-shadow 0.3s;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        .cta-btn:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .copyright {
+            margin-top: 80px;
+            font-size: 14px;
+            opacity: 0.7;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1024px) {
+            .chapter-nav {
+                right: 20px;
+            }
+
+            .split-section {
+                grid-template-columns: 1fr;
+                gap: 40px;
+            }
+
+            .split-visual {
+                min-height: 300px;
+                padding: 60px 40px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .story-section {
+                padding: 60px 24px;
+            }
+
+            .chapter-nav {
+                display: none;
+            }
+
+            .scroll-indicator {
+                bottom: 40px;
+                font-size: 32px;
+            }
+
+            .project-grid,
+            .small-projects-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .project-showcase {
+                padding: 80px 24px;
+            }
+
+            .cta-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .cta-btn {
+                width: 100%;
+                max-width: 300px;
+            }
+        }
+    </style>
+</head>
+<body>
+<!-- Chapter Navigation -->
+<div class="chapter-nav">
+    <div class="chapter-dot active" data-label="Welcome" data-section="0"></div>
+    <div class="chapter-dot" data-label="Curiosity" data-section="1"></div>
+    <div class="chapter-dot" data-label="Discovery" data-section="2"></div>
+    <div class="chapter-dot" data-label="Evolution" data-section="3"></div>
+    <div class="chapter-dot" data-label="Scientific" data-section="4"></div>
+    <div class="chapter-dot" data-label="The Work" data-section="5"></div>
+    <div class="chapter-dot" data-label="Skills" data-section="6"></div>
+    <div class="chapter-dot" data-label="Values" data-section="7"></div>
+    <div class="chapter-dot" data-label="Connect" data-section="8"></div>
+</div>
+
+<!-- Hero Section -->
+<section class="story-section hero-section visible">
+    <div>
+        <h1>Ole Stein</h1>
+        <p>Exploring natural and data sciences with curiosity, care, and kindness.</p>
+        <div class="scroll-indicator">↓</div>
+    </div>
+</section>
+
+<!-- Chapter 1: Curiosity -->
+<section class="story-section">
+    <div class="chapter">
+        <div class="chapter-label">Chapter 1</div>
+        <h2>Why This Work</h2>
+        <p>I'm active in environmental protection because I believe nature deserves to be protected, full stop. The idea of spending my life optimizing profit margins for a company doesn't interest me. I want to contribute to knowledge itself.</p>
+        <p>I'm endlessly curious about how the world works—whether I'm building data tools, exploring natural sciences, or following another Wikipedia rabbit hole. I'm also very social and care deeply about creating welcoming spaces where people feel comfortable.</p>
+        <p>Data science gives me a way to explore the questions I care about, especially in environmental and climate research where it's needed most.</p>
+    </div>
+</section>
+
+<!-- Chapter 2: Discovery -->
+<section class="story-section">
+    <div class="split-section">
+        <div class="split-text">
+            <div class="chapter-label">Chapter 2</div>
+            <h2>The Discovery</h2>
+            <p>In university, I took the introductory Python course. It clicked immediately: programming just made sense to me. We had a brief section about data analysis, and I found it absolutely fascinating. Entire worlds of knowledge, hidden in a mountain of data.</p>
+            <p>From my personal experience playing the video game Overwatch, I knew about the E-Sports League stats lab and talked to my professor about it. We designed a small task together for the rest of the course, and it was still part of this material when I left university. I've played Overwatch since its release, sometimes competitively (top 1.5% of the world), so I had deep domain knowledge about what mattered.</p>
+            <p>Once I got around to playing with the actual data, I loved being able to show stuff like "the amount of healing doesn't matter statistically at all in this team composition, but matters a lot in this one." Feelings you had as a player, proven with science. Seeing these worlds through the noise is incredibly fun for me.</p>
+        </div>
+        <div class="split-visual">
+            Entire Worlds<br>
+            Hidden in Data<br>
+            Finding Patterns
+        </div>
+    </div>
+</section>
+
+<!-- Chapter 3: Evolution -->
+<section class="story-section">
+    <div class="split-section">
+        <div class="split-text">
+            <div class="chapter-label">Chapter 3</div>
+            <h2>Learning Through Failure & Success</h2>
+            <p>After that first project, I wanted to try something more ambitious. Fascinated by extreme weather and environmental events, I saw a chance to learn geospatial analysis applied to the 2021 La Palma volcanic eruption: something completely new to me.</p>
+            <p>I started with raw Sentinel satellite imagery and taught myself rasterio workflows from scratch. The trickiest part was integrating DEM data: different formats, mismatched resolutions, alignment issues. Building that reprojection workflow piece by piece took a while, but finally seeing vegetation indices plotted in 3D alongside elevation was a breakthrough moment.</p>
+            <p><strong>Not everything worked though.</strong> In a different project, I wanted to track biodiversity using GBIF data and relate it to climate variables. I never managed to get properly normalized information because I couldn't figure out how to adjust for the growing number of contributions and the bias that, quite simply, you need humans to be somewhere to see an animal and report it. Sometimes projects don't work, but luckily that did not stop me.</p>
+        </div>
+        <div class="split-visual">
+            NDVI Time-Series<br>
+            3D Elevation<br>
+            Learning from Failure
+        </div>
+    </div>
+</section>
+
+<!-- Chapter 4: Scientific Ambition -->
+<section class="story-section">
+    <div class="split-section">
+        <div class="split-visual">
+            Sea Ice Extent<br>
+            Climate Models<br>
+            Research-Grade
+        </div>
+        <div class="split-text">
+            <div class="chapter-label">Chapter 4</div>
+            <h2>Toward Research</h2>
+            <p>I've long been fascinated by the idea of working at a research institute, contributing to our understanding of the natural world. The Alfred Wegener Institute in Germany is a particular inspiration. I was even accepted for an internship with their data science support group, though I couldn't attend due to scheduling. That conversation confirmed this path is possible and worth preparing for.</p>
+            <p>So I started working on Arctic sea ice extent forecasting. The project combines NSIDC sea ice data with ERA5 climate reanalysis in PostGIS, building LSTM models for daily, weekly, and monthly predictions with tiered spatial aggregation and a Parquet feature store.</p>
+            <p><strong>My path isn't traditional.</strong> I started studying engineering, dropped out, and I'm now doing an apprenticeship as a Fachinformatiker. My credentials aren't what most institutions look for. But I'm confident I can learn anything I put my mind to - I've done so before. This work is my way of building toward opportunities in climate and earth science research.</p>
+        </div>
+    </div>
+</section>
+
+<!-- Chapter 5: The Work -->
+<section class="story-section project-showcase">
+    <div>
+        <div class="showcase-header">
+            <div class="chapter-label">Chapter 5</div>
+            <h2>The Work</h2>
+        </div>
+
+        <!-- Main Projects -->
+        <div class="project-grid">
+            <div class="project-card">
+                <div class="card-inner">
+                    <div class="card-face card-front">
+                        <span class="project-status in-progress">In Progress</span>
+                        <h3>Arctic Ice Extent Forecasting</h3>
+                        <p>Building LSTM models to predict daily, weekly, and monthly sea ice extent using ERA5 reanalysis and
+                            NSIDC data with spatial aggregation in PostGIS.</p>
+                        <div class="tech-stack">
+                            <span class="tech-chip">Python</span>
+                            <span class="tech-chip">xarray</span>
+                            <span class="tech-chip">PostgreSQL/PostGIS</span>
+                            <span class="tech-chip">PyTorch</span>
+                        </div>
+                        <button class="learn-more" type="button">Learn more</button>
+                    </div>
+                    <div class="card-face card-back">
+                        <div class="card-back-header">
+                            <h3>Arctic Ice Extent Forecasting</h3>
+                        </div>
+                        <div class="card-back-content">
+                            <h4>Overview</h4>
+                            <p>This project combines NSIDC sea ice indices with ERA5 climate reanalysis to forecast Arctic ice extent across daily, weekly, and monthly horizons.</p>
+                            <h4>Technical Focus</h4>
+                            <ul>
+                                <li>PostGIS aligns NSIDC polygons with ERA5 climate fields.</li>
+                                <li>xarray prepares multi-scale spatial aggregations and temporal lags.</li>
+                                <li>PyTorch LSTMs power the horizon-specific forecasts.</li>
+                            </ul>
+                            <h4>Status</h4>
+                            <p>The data pipeline is complete. Daily forecast model training and tuning is underway, with weekly and monthly models next in line.</p>
+                        </div>
+                        <div class="card-back-actions">
+                            <a class="back-link" href="https://github.com/CatraMyBeloved/arctic-ice-extent" target="_blank" rel="noreferrer noopener">View on GitHub →</a>
+                            <button class="flip-back" type="button">Back</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="project-card">
+                <div class="card-inner">
+                    <div class="card-face card-front">
+                        <span class="project-status complete">Complete</span>
+                        <h3>Volcanic Recovery Analysis</h3>
+                        <p>Sentinel imagery analysis of vegetation recovery patterns after the 2021 La Palma eruption using NDVI
+                            indices and unsupervised clustering.</p>
+                        <div class="tech-stack">
+                            <span class="tech-chip">Python</span>
+                            <span class="tech-chip">rasterio</span>
+                            <span class="tech-chip">geopandas</span>
+                            <span class="tech-chip">scikit-learn</span>
+                        </div>
+                        <button class="learn-more" type="button">Learn more</button>
+                    </div>
+                    <div class="card-face card-back">
+                        <div class="card-back-header">
+                            <h3>Volcanic Recovery Analysis</h3>
+                        </div>
+                        <div class="card-back-content">
+                            <h4>Overview</h4>
+                            <p>A Sentinel-2 driven study of vegetation recovery after the 2021 La Palma eruption, built while learning the full geospatial workflow from scratch.</p>
+                            <h4>Highlights</h4>
+                            <ul>
+                                <li>Rasterio pipeline for NDVI calculation with DEM alignment and reprojection.</li>
+                                <li>Monthly NDVI composites to track 18 months of regrowth.</li>
+                                <li>K-means clustering to map three distinct recovery zones.</li>
+                            </ul>
+                            <h4>Impact</h4>
+                            <p>Delivered layered maps that showed how elevation and ash exposure shaped recovery speed—unlocking my confidence with geospatial tooling.</p>
+                        </div>
+                        <div class="card-back-actions">
+                            <a class="back-link" href="https://github.com/CatraMyBeloved" target="_blank" rel="noreferrer noopener">View Profile →</a>
+                            <button class="flip-back" type="button">Back</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="project-card">
+                <div class="card-inner">
+                    <div class="card-face card-front">
+                        <span class="project-status complete">Complete</span>
+                        <h3>Overwatch Esports Analytics App</h3>
+                        <p>Interactive Shiny platform with ML-based match predictions, used by coaches and streamers across the
+                            community. Deployed on AWS.</p>
+                        <div class="tech-stack">
+                            <span class="tech-chip">R</span>
+                            <span class="tech-chip">Shiny</span>
+                            <span class="tech-chip">tidyverse</span>
+                            <span class="tech-chip">tidymodels</span>
+                            <span class="tech-chip">AWS</span>
+                        </div>
+                        <button class="learn-more" type="button">Learn more</button>
+                    </div>
+                    <div class="card-face card-back">
+                        <div class="card-back-header">
+                            <h3>Overwatch Esports Analytics App</h3>
+                        </div>
+                        <div class="card-back-content">
+                            <h4>Overview</h4>
+                            <p>An R Shiny application delivering match predictions, team dashboards, and historical trends for Overwatch League fans and coaches.</p>
+                            <h4>Technical Features</h4>
+                            <ul>
+                                <li>Scraping pipeline captures match results, map stats, and compositions.</li>
+                                <li>Random Forest model via tidymodels feeds real-time win probabilities.</li>
+                                <li>Interactive Shiny UI lets users explore rosters, metas, and match history.</li>
+                            </ul>
+                            <h4>Community Impact</h4>
+                            <p>The tool became a go-to resource for community casters and even pro staff, proving that a solo project can meaningfully support decision-making.</p>
+                        </div>
+                        <div class="card-back-actions">
+                            <a class="back-link" href="https://github.com/CatraMyBeloved" target="_blank" rel="noreferrer noopener">View Profile →</a>
+                            <button class="flip-back" type="button">Back</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Small Projects -->
+        <div class="chapter-label" style="text-align: center; margin: 80px 0 40px;">Other Experiments</div>
+        <div class="small-projects-grid">
+            <div class="small-project">
+                <h4>Twitch Chat Prediction Bot</h4>
+                <p>Real-time chat bot using RandomForest and TwitchIO, predicting Overwatch League match outcomes based
+                    on chat sentiment.</p>
+                <div class="tech-stack">
+                    <span class="tech-chip">Python</span>
+                    <span class="tech-chip">scikit-learn</span>
+                    <span class="tech-chip">TwitchIO</span>
+                </div>
+            </div>
+
+            <div class="small-project">
+                <h4>Monte Carlo Team Rankings</h4>
+                <p>Probabilistic ranking system for esports teams using Monte Carlo simulations to estimate performance
+                    distributions.</p>
+                <div class="tech-stack">
+                    <span class="tech-chip">Python</span>
+                    <span class="tech-chip">NumPy</span>
+                    <span class="tech-chip">pandas</span>
+                </div>
+            </div>
+
+            <div class="small-project">
+                <h4>E-Sports Analysis</h4>
+                <p>My first project, diving into the basics of data analysis, API-interactions and the starts of machine
+                    learning.</p>
+                <div class="tech-stack">
+                    <span class="tech-chip">Python</span>
+                    <span class="tech-chip">Pandas</span>
+                    <span class="tech-chip">Seaborn</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Chapter 6: Skills -->
+<section class="story-section">
+    <div class="chapter">
+        <div class="chapter-label">Chapter 6</div>
+        <h2>The Toolkit</h2>
+        <p style="margin-bottom: 48px;">Every project teaches me something new. Here's what I've learned to use
+            effectively:</p>
+
+        <div class="skills-grid">
+            <div class="skill-category">
+                <h3>Programming Languages</h3>
+                <ul class="skill-list">
+                    <li>Python (primary)</li>
+                    <li>R</li>
+                    <li>SQL</li>
+                </ul>
+            </div>
+
+            <div class="skill-category">
+                <h3>Machine Learning</h3>
+                <ul class="skill-list">
+                    <li>PyTorch (LSTM, RNN)</li>
+                    <li>scikit-learn</li>
+                    <li>tidymodels (R)</li>
+                    <li>Random Forests</li>
+                    <li>Unsupervised clustering</li>
+                </ul>
+            </div>
+
+            <div class="skill-category">
+                <h3>Geospatial Analysis</h3>
+                <ul class="skill-list">
+                    <li>rasterio</li>
+                    <li>geopandas</li>
+                    <li>PostGIS</li>
+                    <li>QGIS</li>
+                    <li>Sentinel satellite imagery</li>
+                </ul>
+            </div>
+
+            <div class="skill-category">
+                <h3>Data Engineering</h3>
+                <ul class="skill-list">
+                    <li>PostgreSQL/PostGIS</li>
+                    <li>xarray</li>
+                    <li>Parquet</li>
+                    <li>pandas</li>
+                    <li>Data pipelines</li>
+                </ul>
+            </div>
+
+            <div class="skill-category">
+                <h3>Visualization</h3>
+                <ul class="skill-list">
+                    <li>Matplotlib</li>
+                    <li>ggplot</li>
+                    <li>Seaborn</li>
+                    <li>Plotly</li>
+                </ul>
+            </div>
+            <div class="skill-category">
+                <h3>Climate & Earth Science</h3>
+                <ul class="skill-list">
+                    <li>ERA5 reanalysis data</li>
+                    <li>NSIDC sea ice data</li>
+                    <li>NDVI indices</li>
+                    <li>DEM processing</li>
+                </ul>
+            </div>
+
+            <div class="skill-category">
+                <h3>Tools & Deployment</h3>
+                <ul class="skill-list">
+                    <li>Git/GitHub</li>
+                    <li>R Shiny</li>
+                    <li>AWS deployment</li>
+                    <li>Docker basics</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Chapter 7: Values -->
+<section class="story-section" style="background: white;">
+    <div class="chapter">
+        <div class="chapter-label">Chapter 7</div>
+        <h2>What Matters Most</h2>
+        <p style="margin-bottom: 60px;">Beyond the technical work, these are the things I try to live by:</p>
+
+        <div class="values-grid">
+            <div class="value-item">
+                <h3>Curiosity</h3>
+                <p>Asking questions, exploring new ideas, and learning across disciplines is at the heart of everything
+                    I do. I'm curious about nearly everything.</p>
+            </div>
+
+            <div class="value-item">
+                <h3>Community</h3>
+                <p>Despite the daunting, and at times seemingly impossible, challenges of today's world, I believe our
+                    only chance to fix them is together. Collaboration, openness, and shared effort matter more than
+                    individual achievement.</p>
+            </div>
+
+            <div class="value-item">
+                <h3>Kindness</h3>
+                <p>Good work only happens when people feel safe and welcome. Facing challenges together requires trust,
+                    empathy, and respect. Real impact comes not from force, but from kindness and cooperation.</p>
+            </div>
+
+            <div class="value-item">
+                <h3>Science</h3>
+                <p>We might never fully understand the world, but every step toward deeper knowledge brings us closer to
+                    helping each other and our planet. Data is one tool to make that possible.</p>
+            </div>
+
+            <div class="value-item">
+                <h3>Impact</h3>
+                <p>I want to use my skills where they make a difference: in research, communities, or creative projects,
+                    so that what I build contributes to something larger than myself.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Final CTA -->
+<section class="story-section final-cta">
+    <div>
+        <h2>Let's Connect</h2>
+        <p>If you feel like reaching out, I love talking about all things data, science, or art. :D</p>
+
+        <div class="cta-buttons">
+            <a class="cta-btn" href="mailto:ole.stein.ctr@outlook.com">Email Me</a>
+            <a class="cta-btn" href="https://github.com/CatraMyBeloved" target="_blank">View GitHub</a>
+        </div>
+
+        <p class="copyright">&copy; <span id="year"></span> Ole Stein · <a href="" style="color: rgba(255,255,255,0.7); font-size: 12px;">Need the resume version? →</a></p>
+    </div>
+</section>
+
+<!-- Project Dialogs -->
+<script>
+    // Set current year
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    // Intersection Observer for scroll-triggered animations
+    const observerOptions = {
+        threshold: 0.2,
+        rootMargin: '0px 0px -100px 0px'
+    };
+
+    const sectionObserver = new IntersectionObserver((entries) => {
+        entries.forEach((entry, index) => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('visible');
+
+                // Update chapter navigation
+                const sections = Array.from(document.querySelectorAll('.story-section'));
+                const currentIndex = sections.indexOf(entry.target);
+
+                document.querySelectorAll('.chapter-dot').forEach((dot, i) => {
+                    dot.classList.toggle('active', i === currentIndex);
+                });
+            }
+        });
+    }, observerOptions);
+
+    // Observe all story sections
+    document.querySelectorAll('.story-section').forEach(section => {
+        sectionObserver.observe(section);
+    });
+
+    // Chapter navigation click handlers
+    document.querySelectorAll('.chapter-dot').forEach((dot, index) => {
+        dot.addEventListener('click', () => {
+            const sections = document.querySelectorAll('.story-section');
+            sections[index].scrollIntoView({behavior: 'smooth'});
+        });
+    });
+
+    // Scroll indicator
+    document.querySelector('.scroll-indicator')?.addEventListener('click', () => {
+        const sections = document.querySelectorAll('.story-section');
+        sections[1]?.scrollIntoView({behavior: 'smooth'});
+    });
+
+    // Project card flips
+    document.querySelectorAll('.project-card').forEach(card => {
+        const learnMoreButton = card.querySelector('.learn-more');
+        const backButton = card.querySelector('.flip-back');
+
+        learnMoreButton?.addEventListener('click', (event) => {
+            event.stopPropagation();
+            card.classList.add('flipped');
+        });
+
+        backButton?.addEventListener('click', (event) => {
+            event.stopPropagation();
+            card.classList.remove('flipped');
+        });
+    });
+
+    document.addEventListener('keydown', (event) => {
+        if (event.key === 'Escape') {
+            document.querySelectorAll('.project-card.flipped').forEach(card => card.classList.remove('flipped'));
+        }
+    });
+</script>
+</body>
+</html>
