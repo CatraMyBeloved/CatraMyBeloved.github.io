@@ -288,12 +288,12 @@
         /* Dialog styling */
         dialog{
             border:none;
-            border-radius:12px;
-            max-width:720px;
+            border-radius:var(--radius);
+            max-width:640px;
             width:92%;
             padding:0;
-            background:#fff;
-            box-shadow:0 20px 50px rgba(0,0,0,.3);
+            background:var(--bg);
+            box-shadow:0 4px 32px rgba(45,42,38,.15), 0 0 0 1px var(--line);
             position:fixed;
             top:50%;
             left:50%;
@@ -301,52 +301,58 @@
             max-height:85vh;
         }
         dialog::backdrop{
-            background:rgba(0,0,0,.5);
-            backdrop-filter:blur(2px);
+            background:rgba(45,42,38,.4);
+            backdrop-filter:blur(4px);
         }
         dialog:not([open]){
             display:none;
         }
         .dialog-head{
-            padding:20px 24px;
-            border-bottom:1px solid #eee;
+            padding:24px 28px 20px;
+            border-bottom:1px solid var(--line);
             display:flex;
             justify-content:space-between;
-            align-items:center;
-            background:linear-gradient(135deg,var(--accent) 0%,var(--accent-warm) 100%);
-            color:white;
-            border-radius:12px 12px 0 0;
+            align-items:flex-start;
+            gap:16px;
         }
         .dialog-head h3{
             margin:0;
-            font-size:20px;
+            font-size:22px;
+            letter-spacing:-.01em;
         }
         .dialog-body{
-            padding:28px;
-            max-height:65vh;
+            padding:24px 28px 32px;
+            max-height:60vh;
             overflow:auto;
-            line-height:1.7;
-            color:var(--ink);
+            line-height:1.75;
+            color:var(--muted);
         }
         .dialog-body p{
-            margin-bottom:18px;
+            margin-bottom:16px;
+        }
+        .dialog-body p:first-child{
+            color:var(--ink);
         }
         .dialog-body p:last-child{
             margin-bottom:0;
         }
         .close-btn{
-            padding:8px 14px;
+            padding:6px 12px;
             border-radius:6px;
-            border:1px solid rgba(255,255,255,.3);
-            background:rgba(255,255,255,.15);
-            color:white;
+            border:1px solid var(--line);
+            background:transparent;
+            color:var(--muted);
             font-weight:600;
             cursor:pointer;
-            transition:background .2s;
-            font-size:14px;
+            transition:all .2s;
+            font-size:13px;
+            white-space:nowrap;
+            flex-shrink:0;
         }
         .close-btn:hover{
-            background:rgba(255,255,255,.25);
+            border-color:var(--accent);
+            color:var(--accent);
+            background:var(--accent-pale);
         }
 
         footer{
@@ -412,7 +418,7 @@
             Fairness, inclusiveness, and psychological safety are non-negotiable; data science is how I answer the questions I care about.
         </p>
         <ul class="hero-links">
-            <li><span>Email:</span> <a href="mailto:ole.stein.ctr@outlook.com">ole.stein.ctr@outlook.com</a></li>
+            <li><span>Email:</span> <a href="/cdn-cgi/l/email-protection#96f9faf3b8e5e2f3fff8b8f5e2e4d6f9e3e2faf9f9fdb8f5f9fb"><span class="__cf_email__" data-cfemail="96f9faf3b8e5e2f3fff8b8f5e2e4d6f9e3e2faf9f9fdb8f5f9fb">[email&#160;protected]</span></a></li>
             <li><span>Discord:</span> <code>derstein</code></li>
             <li><span>GitHub:</span> <a href="https://github.com/CatraMyBeloved" target="_blank" rel="noopener">github.com/CatraMyBeloved</a></li>
         </ul>
@@ -623,7 +629,7 @@
     <h2>Contact</h2>
     <p>If you feel like reaching out, I love talking about all things data, science, or art!</p>
     <ul>
-        <li>Email · <a href="mailto:ole.stein.ctr@outlook.com">ole.stein.ctr@outlook.com</a></li>
+        <li>Email · <a href="/cdn-cgi/l/email-protection#e6898a83c89592838f88c8859294a68993928a89898dc885898b"><span class="__cf_email__" data-cfemail="d1bebdb4ffa2a5b4b8bfffb2a5a391bea4a5bdbebebaffb2bebc">[email&#160;protected]</span></a></li>
         <li>Discord · <code>derstein</code></li>
         <li>GitHub · <a href="https://github.com/CatraMyBeloved" target="_blank" rel="noopener">github.com/CatraMyBeloved</a></li>
     </ul>
@@ -655,7 +661,7 @@
     </div>
 </dialog>
 
-<script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
     document.getElementById('year').textContent = new Date().getFullYear();
 
     document.addEventListener('DOMContentLoaded', function() {
