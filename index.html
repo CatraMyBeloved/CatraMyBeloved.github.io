@@ -51,6 +51,13 @@
             align-items:center;
             font-weight:600;
         }
+        nav a{
+            transition:color .2s ease;
+        }
+        nav a:not(.brand):hover{
+            text-decoration:none;
+            color:var(--accent-warm);
+        }
         nav .brand{
             margin-right:auto;
             font-size:18px;
@@ -79,6 +86,21 @@
             font-size:clamp(28px,3vw,34px);
             margin:0 0 16px;
             letter-spacing:.02em;
+            position:relative;
+            display:inline-block;
+        }
+        h2::after{
+            content:"";
+            position:absolute;
+            bottom:-4px;
+            left:0;
+            width:40px;
+            height:2px;
+            background:var(--accent);
+            transition:width .3s ease;
+        }
+        section:hover h2::after{
+            width:60px;
         }
         h3{
             font-size:22px;
@@ -116,6 +138,12 @@
             gap:28px;
             margin:0;
         }
+        .principles > div{
+            transition:transform .2s ease;
+        }
+        .principles > div:hover{
+            transform:translateY(-2px);
+        }
         .principles dt{
             font-weight:700;
             text-transform:uppercase;
@@ -123,13 +151,19 @@
             font-size:13px;
             color:var(--muted);
             margin-bottom:10px;
+            transition:color .2s ease;
+        }
+        .principles > div:hover dt{
+            color:var(--accent);
         }
         .principles dd{
             margin:0;
         }
         .current-project{
-            padding-left:26px;
+            padding:28px 28px 28px 26px;
             border-left:4px solid var(--accent);
+            background:var(--accent-pale);
+            border-radius:0 var(--radius) var(--radius) 0;
         }
         .current-project header{
             margin-bottom:16px;
@@ -138,14 +172,26 @@
             display:inline-flex;
             align-items:center;
             gap:6px;
-            background:var(--accent-soft);
-            color:var(--accent);
+            background:var(--accent);
+            color:#fff;
             padding:6px 12px;
             border-radius:999px;
             font-size:12px;
             letter-spacing:.08em;
             text-transform:uppercase;
             font-weight:600;
+        }
+        .status-pill::before{
+            content:"";
+            width:6px;
+            height:6px;
+            background:#fff;
+            border-radius:50%;
+            animation:pulse 2s ease-in-out infinite;
+        }
+        @keyframes pulse{
+            0%,100%{opacity:1;transform:scale(1);}
+            50%{opacity:.5;transform:scale(1.2);}
         }
         .meta{
             display:flex;
@@ -181,6 +227,11 @@
             border-radius:50%;
             background:var(--accent);
             box-shadow:0 0 0 6px rgba(217,72,15,.15);
+            transition:box-shadow .2s ease, transform .2s ease;
+        }
+        .timeline li:hover::before{
+            box-shadow:0 0 0 10px rgba(217,72,15,.2);
+            transform:scale(1.25);
         }
         .timeline li:last-child{
             padding-bottom:0;
@@ -217,7 +268,10 @@
             font-weight:600;
             cursor:pointer;
             border:1px solid transparent;
-            transition:all .2s;
+            transition:all .2s ease;
+        }
+        .btn:hover{
+            transform:translateY(-1px);
         }
         .btn-primary{
             background:var(--accent);
@@ -227,6 +281,7 @@
         .btn-primary:hover{
             background:var(--accent-warm);
             text-decoration:none;
+            box-shadow:0 4px 12px rgba(217,72,15,.25);
         }
         .btn-secondary{
             background:transparent;
@@ -237,6 +292,57 @@
             background:var(--accent-pale);
             text-decoration:none;
         }
+        .expandable{
+            max-height:0;
+            overflow:hidden;
+            transition:max-height .4s ease, opacity .3s ease, margin .3s ease;
+            opacity:0;
+            margin-top:0;
+        }
+        .expandable.open{
+            max-height:600px;
+            opacity:1;
+            margin-top:20px;
+        }
+        .expandable-content{
+            padding:20px;
+            background:var(--accent-pale);
+            border-radius:var(--radius);
+            border-left:3px solid var(--accent);
+        }
+        .expandable-content p{
+            margin:0 0 12px;
+            color:var(--muted);
+        }
+        .expandable-content p:last-child{
+            margin-bottom:0;
+        }
+        .btn-expand{
+            display:inline-flex;
+            align-items:center;
+            gap:6px;
+            padding:8px 16px;
+            border-radius:6px;
+            font-size:14px;
+            font-weight:600;
+            cursor:pointer;
+            border:1px solid var(--accent);
+            background:var(--accent);
+            color:#fff;
+            transition:all .2s;
+        }
+        .btn-expand:hover{
+            background:var(--accent-warm);
+            border-color:var(--accent-warm);
+        }
+        .btn-expand::after{
+            content:"↓";
+            font-size:12px;
+            transition:transform .3s ease;
+        }
+        .btn-expand.open::after{
+            transform:rotate(180deg);
+        }
         .lab-list{
             list-style:none;
             margin:0;
@@ -245,6 +351,10 @@
         .lab-list li{
             padding:18px 0;
             border-top:1px solid var(--line);
+            transition:padding-left .2s ease;
+        }
+        .lab-list li:hover{
+            padding-left:8px;
         }
         .lab-list li:first-child{
             border-top:none;
@@ -252,6 +362,10 @@
         .lab-list h3{
             margin:0 0 6px;
             font-size:18px;
+            transition:color .2s ease;
+        }
+        .lab-list li:hover h3{
+            color:var(--accent);
         }
         .lab-list p{
             margin:0 0 8px;
@@ -262,98 +376,43 @@
         }
         .skills-grid{
             display:grid;
-            grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
-            gap:24px 32px;
+            grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+            gap:16px;
+        }
+        .skills-grid > div{
+            padding:20px 22px;
+            background:#fff;
+            border:1px solid var(--line);
+            border-radius:var(--radius);
         }
         .skills-grid dt{
             font-weight:700;
-            margin-bottom:10px;
-            letter-spacing:.05em;
+            margin-bottom:14px;
+            letter-spacing:.06em;
             text-transform:uppercase;
-            font-size:13px;
-            color:var(--muted);
+            font-size:11px;
+            color:var(--accent);
         }
         .skills-grid dd{
             margin:0;
+            display:flex;
+            flex-wrap:wrap;
+            gap:6px;
         }
         .skills-grid dd span{
             display:inline-block;
-            margin:0 8px 8px 0;
             padding:4px 10px;
-            border-radius:999px;
-            background:rgba(217,72,15,.08);
-            font-size:14px;
-        }
-
-        /* Dialog styling */
-        dialog{
-            border:none;
-            border-radius:var(--radius);
-            max-width:640px;
-            width:92%;
-            padding:0;
+            border-radius:4px;
             background:var(--bg);
-            box-shadow:0 4px 32px rgba(45,42,38,.15), 0 0 0 1px var(--line);
-            position:fixed;
-            top:50%;
-            left:50%;
-            transform:translate(-50%, -50%);
-            max-height:85vh;
-        }
-        dialog::backdrop{
-            background:rgba(45,42,38,.4);
-            backdrop-filter:blur(4px);
-        }
-        dialog:not([open]){
-            display:none;
-        }
-        .dialog-head{
-            padding:24px 28px 20px;
-            border-bottom:1px solid var(--line);
-            display:flex;
-            justify-content:space-between;
-            align-items:flex-start;
-            gap:16px;
-        }
-        .dialog-head h3{
-            margin:0;
-            font-size:22px;
-            letter-spacing:-.01em;
-        }
-        .dialog-body{
-            padding:24px 28px 32px;
-            max-height:60vh;
-            overflow:auto;
-            line-height:1.75;
-            color:var(--muted);
-        }
-        .dialog-body p{
-            margin-bottom:16px;
-        }
-        .dialog-body p:first-child{
+            font-size:13px;
             color:var(--ink);
         }
-        .dialog-body p:last-child{
-            margin-bottom:0;
-        }
-        .close-btn{
-            padding:6px 12px;
-            border-radius:6px;
-            border:1px solid var(--line);
-            background:transparent;
-            color:var(--muted);
-            font-weight:600;
-            cursor:pointer;
-            transition:all .2s;
-            font-size:13px;
-            white-space:nowrap;
-            flex-shrink:0;
-        }
-        .close-btn:hover{
-            border-color:var(--accent);
-            color:var(--accent);
+        .skills-grid dd span.primary{
             background:var(--accent-pale);
+            color:var(--accent);
+            font-weight:500;
         }
+
 
         footer{
             max-width:960px;
@@ -361,6 +420,9 @@
             padding:36px 20px 48px;
             color:var(--muted);
             font-size:14px;
+        }
+        footer h2::after{
+            display:none;
         }
         footer ul{
             list-style:none;
@@ -418,7 +480,7 @@
             Fairness, inclusiveness, and psychological safety are non-negotiable; data science is how I answer the questions I care about.
         </p>
         <ul class="hero-links">
-            <li><span>Email:</span> <a href="/cdn-cgi/l/email-protection#96f9faf3b8e5e2f3fff8b8f5e2e4d6f9e3e2faf9f9fdb8f5f9fb"><span class="__cf_email__" data-cfemail="96f9faf3b8e5e2f3fff8b8f5e2e4d6f9e3e2faf9f9fdb8f5f9fb">[email&#160;protected]</span></a></li>
+            <li><span>Email:</span> <a href="mailto:ole.stein.ctr@outlook.com"></a></li>
             <li><span>Discord:</span> <code>derstein</code></li>
             <li><span>GitHub:</span> <a href="https://github.com/CatraMyBeloved" target="_blank" rel="noopener">github.com/CatraMyBeloved</a></li>
         </ul>
@@ -504,7 +566,14 @@
                 <p class="stack"><span>Stack</span> Python · pandas · numpy · scikit-learn · rasterio · geopandas</p>
                 <div class="actions">
                     <a href="https://github.com/CatraMyBeloved/volcano-recover-analysis" target="_blank" rel="noopener" class="btn btn-secondary">View repository</a>
-                    <button class="btn btn-primary" data-dialog="dlg-volcano">Read more</button>
+                    <button class="btn-expand" data-expand>Read more</button>
+                </div>
+                <div class="expandable">
+                    <div class="expandable-content">
+                        <p>Rather than repeating the usual "first remote sensing projects," I looked for something dramatic and meaningful. I landed on the 2021 La Palma volcanic eruption.</p>
+                        <p>Starting with raw Sentinel imagery, I dove into rasterio and other geospatial tools, experimenting with indices like NDVI, and gradually shaping the project into a structured analysis. Building a reprojection workflow and finally seeing vegetation indices plotted in 3D alongside elevation was a breakthrough moment.</p>
+                        <p>Beyond clustering vegetation "fingerprints," the toolset also lays the groundwork for mapping lava flows and comparing recovery across impact zones. It's not a formal paper, but a foundation others can build on—and it took me from zero geospatial experience to a working ecological workflow.</p>
+                    </div>
                 </div>
             </li>
             <li>
@@ -524,7 +593,14 @@
                 <p class="stack"><span>Stack</span> R · tidyverse · Shiny · tidymodels</p>
                 <div class="actions">
                     <a href="https://github.com/CatraMyBeloved/owcs_analysis_app" target="_blank" rel="noopener" class="btn btn-secondary">View repository</a>
-                    <button class="btn btn-primary" data-dialog="dlg-ow">Read more</button>
+                    <button class="btn-expand" data-expand>Read more</button>
+                </div>
+                <div class="expandable">
+                    <div class="expandable-content">
+                        <p>I've played Overwatch since its release, and at times competitively, so I naturally became fascinated with the esports scene. During university, I discovered the Overwatch League's dedicated statistics site, only to see it shut down when the league ended. Its replacement, the Overwatch Champions Series (OWCS), lacked anything close to the depth of the original stats lab. As a data enthusiast, I was disappointed, but also inspired: if the community didn't have a proper analytics platform, I could build one.</p>
+                        <p>I started by scraping community spreadsheets and transforming them into a relational database on AWS. Using R and Shiny, I built dashboards, team and map breakdowns, hero ban and interaction analysis, and predictive modules using random forests, boosted trees, and logistic regression via tidymodels.</p>
+                        <p>The project became surprisingly impactful. Streamers, coaches, and YouTubers used it; I even developed a small reputation in the esports community. At one point, a professional coach reached out about my opinion on machine learning in the context of team composition setup. Beyond the technical challenge, this was my first experience of building something others genuinely relied on.</p>
+                    </div>
                 </div>
             </li>
         </ol>
@@ -570,55 +646,67 @@
         </p>
         <dl class="skills-grid">
             <div>
-                <dt>Programming & Query Languages</dt>
+                <dt>Languages</dt>
                 <dd>
-                    <span>Python</span>
-                    <span>R</span>
-                    <span>SQL (PostgreSQL, SQLite)</span>
+                    <span class="primary">Python</span>
+                    <span class="primary">R</span>
+                    <span class="primary">SQL</span>
+                    <span>PostgreSQL</span>
+                    <span>SQLite</span>
                 </dd>
             </div>
             <div>
-                <dt>Data Science & Machine Learning</dt>
+                <dt>Machine Learning</dt>
                 <dd>
-                    <span>Data analysis & visualization</span>
-                    <span>Classical ML (random forest, boosted trees, clustering, regression)</span>
-                    <span>Deep learning (PyTorch, LSTMs)</span>
-                    <span>Time-series analysis</span>
-                    <span>Statistics & EDA</span>
+                    <span class="primary">PyTorch</span>
+                    <span>LSTMs</span>
+                    <span>Random Forest</span>
+                    <span>Boosted Trees</span>
+                    <span>Clustering</span>
+                    <span>Regression</span>
+                    <span>Time-series</span>
                 </dd>
             </div>
             <div>
-                <dt>Geospatial Analysis</dt>
+                <dt>Geospatial</dt>
                 <dd>
-                    <span>Raster & vector processing (rasterio, geopandas)</span>
-                    <span>Spatial databases (PostGIS)</span>
-                    <span>Remote sensing (Sentinel imagery, NDVI, DEMs)</span>
+                    <span class="primary">rasterio</span>
+                    <span class="primary">geopandas</span>
+                    <span class="primary">PostGIS</span>
                     <span>QGIS</span>
+                    <span>Sentinel</span>
+                    <span>NDVI</span>
+                    <span>DEMs</span>
                 </dd>
             </div>
             <div>
-                <dt>Visualization & Applications</dt>
+                <dt>Visualization</dt>
                 <dd>
-                    <span>R Shiny (interactive dashboards)</span>
-                    <span>ggplot2, matplotlib, seaborn</span>
+                    <span class="primary">R Shiny</span>
+                    <span>ggplot2</span>
+                    <span>matplotlib</span>
+                    <span>seaborn</span>
                     <span>Streamlit</span>
                 </dd>
             </div>
             <div>
-                <dt>Databases & Infrastructure</dt>
+                <dt>Infrastructure</dt>
                 <dd>
-                    <span>PostgreSQL, SQLite</span>
-                    <span>AWS (RDS, S3)</span>
-                    <span>Docker (basic)</span>
+                    <span class="primary">PostgreSQL</span>
+                    <span>AWS</span>
+                    <span>Docker</span>
+                    <span>Linux</span>
+                    <span>Git</span>
                 </dd>
             </div>
             <div>
-                <dt>Other Tools & Practices</dt>
+                <dt>Data Engineering</dt>
                 <dd>
-                    <span>Git & version control</span>
-                    <span>Linux systems</span>
-                    <span>Web scraping (custom pipelines)</span>
-                    <span>Open-source collaboration</span>
+                    <span class="primary">pandas</span>
+                    <span class="primary">xarray</span>
+                    <span>Web scraping</span>
+                    <span>ETL pipelines</span>
+                    <span>Parquet</span>
                 </dd>
             </div>
         </dl>
@@ -629,93 +717,28 @@
     <h2>Contact</h2>
     <p>If you feel like reaching out, I love talking about all things data, science, or art!</p>
     <ul>
-        <li>Email · <a href="/cdn-cgi/l/email-protection#e6898a83c89592838f88c8859294a68993928a89898dc885898b"><span class="__cf_email__" data-cfemail="d1bebdb4ffa2a5b4b8bfffb2a5a391bea4a5bdbebebaffb2bebc">[email&#160;protected]</span></a></li>
+        <li><span>Email:</span> <a href="mailto:ole.stein.ctr@outlook.com">ole.stein.ctr@outlook.com</a></li>
         <li>Discord · <code>derstein</code></li>
         <li>GitHub · <a href="https://github.com/CatraMyBeloved" target="_blank" rel="noopener">github.com/CatraMyBeloved</a></li>
     </ul>
     <p>© <span id="year"></span> Ole Stein</p>
 </footer>
 
-<!-- Expanded project dialogs -->
-<dialog id="dlg-volcano" aria-labelledby="dlg-volcano-title">
-    <div class="dialog-head">
-        <h3 id="dlg-volcano-title">Volcanic Recovery Analysis</h3>
-        <button class="close-btn" data-close>✕ Close</button>
-    </div>
-    <div class="dialog-body">
-        <p>I began this project after discovering the Sentinel satellite missions and wanting to go beyond surface-level tutorials. Rather than repeating the usual "first remote sensing projects," I looked for something dramatic and meaningful. I landed on the 2021 La Palma volcanic eruption.</p>
-        <p>Starting with raw Sentinel imagery, I dove into rasterio and other geospatial tools, experimenting with indices like NDVI, and gradually shaping the project into a structured analysis. A particularly rewarding challenge came when I introduced DEM data: different formats, mismatched resolutions, and alignment issues made integration tricky. Building a reprojection workflow and finally seeing vegetation indices plotted in 3D alongside elevation was a breakthrough moment.</p>
-        <p>Beyond clustering vegetation "fingerprints," the toolset also lays the groundwork for mapping lava flows and comparing recovery across impact zones. It's not a formal paper, but a foundation others can build on—and it took me from zero geospatial experience to a working ecological workflow.</p>
-    </div>
-</dialog>
-
-<dialog id="dlg-ow" aria-labelledby="dlg-ow-title">
-    <div class="dialog-head">
-        <h3 id="dlg-ow-title">Overwatch Esports Analysis App</h3>
-        <button class="close-btn" data-close>✕ Close</button>
-    </div>
-    <div class="dialog-body">
-        <p>I've played Overwatch since its release, and at times competitively, so I naturally became fascinated with the esports scene. During university, I discovered the Overwatch League's dedicated statistics site, only to see it shut down when the league ended. Its replacement, the Overwatch Champions Series (OWCS), lacked anything close to the depth of the original stats lab. As a data enthusiast, I was disappointed, but also inspired: if the community didn't have a proper analytics platform, I could build one.</p>
-        <p>I started by scraping community spreadsheets and transforming them into a relational database on AWS. Using R and Shiny, I built dashboards, team and map breakdowns, hero ban and interaction analysis, and predictive modules using random forests, boosted trees, and logistic regression via tidymodels. While it never had the full polish of a professional product, my domain knowledge and stack enabled insights that didn't exist elsewhere.</p>
-        <p>The project became surprisingly impactful. Streamers, coaches, and YouTubers used it; I even developed a small reputation in the esports community. At one point, a professional coach reached out about my opinion on machine learning in the context of team composition setup. Beyond the technical challenge, this was my first experience of building something others genuinely relied on.</p>
-    </div>
-</dialog>
-
 <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
     document.getElementById('year').textContent = new Date().getFullYear();
 
     document.addEventListener('DOMContentLoaded', function() {
-        document.querySelectorAll('[data-dialog]').forEach(btn => {
-            btn.addEventListener('click', (e) => {
-                e.preventDefault();
-                const dialogId = btn.getAttribute('data-dialog');
-                const dialog = document.getElementById(dialogId);
-
-                if (dialog) {
-                    dialog.showModal();
-                    document.body.style.overflow = 'hidden';
-
-                    const closeBtn = dialog.querySelector('[data-close]');
-                    if (closeBtn) closeBtn.focus();
-
-                    const handleClose = () => {
-                        document.body.style.overflow = '';
-                        btn.focus();
-                        dialog.removeEventListener('close', handleClose);
-                    };
-                    dialog.addEventListener('close', handleClose);
-                }
-            });
-        });
-
-        // Close dialog buttons
-        document.querySelectorAll('[data-close]').forEach(btn => {
+        // Expand/collapse functionality
+        document.querySelectorAll('[data-expand]').forEach(btn => {
             btn.addEventListener('click', () => {
-                const dialog = btn.closest('dialog');
-                if (dialog) dialog.close();
-            });
-        });
+                const container = btn.closest('li') || btn.closest('article');
+                const expandable = container.querySelector('.expandable');
+                const isOpen = expandable.classList.contains('open');
 
-        // Close on backdrop click
-        document.querySelectorAll('dialog').forEach(dialog => {
-            dialog.addEventListener('click', (e) => {
-                const rect = dialog.getBoundingClientRect();
-                const isInDialog = (
-                    rect.top <= e.clientY && e.clientY <= rect.top + rect.height &&
-                    rect.left <= e.clientX && e.clientX <= rect.left + rect.width
-                );
-                if (!isInDialog) {
-                    dialog.close();
-                }
+                expandable.classList.toggle('open');
+                btn.classList.toggle('open');
+                btn.textContent = isOpen ? 'Read more' : 'Show less';
             });
-        });
-
-        // Escape key handling
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape') {
-                const openDialog = document.querySelector('dialog[open]');
-                if (openDialog) openDialog.close();
-            }
         });
     });
 </script>
