@@ -159,14 +159,21 @@
         .principles dd{
             margin:0;
         }
+        .section-header-with-status{
+            display:flex;
+            align-items:center;
+            gap:16px;
+            flex-wrap:wrap;
+            margin-bottom:16px;
+        }
+        .section-header-with-status h2{
+            margin-bottom:0;
+        }
         .current-project{
             padding:28px 28px 28px 26px;
             border-left:4px solid var(--accent);
             background:var(--accent-pale);
             border-radius:0 var(--radius) var(--radius) 0;
-        }
-        .current-project header{
-            margin-bottom:16px;
         }
         .status-pill{
             display:inline-flex;
@@ -519,12 +526,12 @@
     </section>
 
     <section id="current">
-        <h2>Current Expedition</h2>
+        <div class="section-header-with-status">
+            <h2>Current Expedition</h2>
+            <span class="status-pill">In Progress</span>
+        </div>
         <article class="current-project">
-            <header>
-                <span class="status-pill">In Progress</span>
-                <h3>Arctic Ice Extent Forecasting</h3>
-            </header>
+            <h3>Arctic Ice Extent Forecasting</h3>
             <p>
                 Combines NSIDC sea ice index with ERA5 reanalysis data in PostGIS and xarray. Building LSTM models for daily,
                 weekly, and monthly forecasting; includes tiered aggregation and Parquet feature store.
@@ -613,6 +620,13 @@
         </p>
         <ul class="lab-list">
             <li>
+                <h3>Hot Moon Climate Simulator</h3>
+                <p>A 2D climate simulation of a fictional exoplanet moon, built to explore both numerical methods and climate physics. The core challenge was formulating continuous differential equations for energy balance, radiative transfer, and moisture dynamics, then solving them efficiently using Julia's DifferentialEquations.jl library. The simulation evolves temperature and precipitation across a 90x180 grid, classifies 12 biomes, and produces animated visualizations.</p>
+                <p>This project served two purposes: learning to work with ODE solvers and large coupled systems, and building physical intuition for climate dynamics like ice-albedo feedback, rain shadows, and greenhouse effects. Both skills feed directly into my applied climate work.</p>
+                <p class="stack">Stack · Julia · DifferentialEquations.jl · Plots.jl</p>
+                <p><a href="https://github.com/CatraMyBeloved/moon_simulation" target="_blank" rel="noopener">View repository</a></p>
+            </li>
+            <li>
                 <h3>Twitch Prediction Bot</h3>
                 <p>Real-time ML model deployment with ensemble methods (Random Forest, Neural Networks) achieving 89% accuracy on match predictions. Features live chat integration and fuzzy string matching.</p>
                 <p class="stack">Stack · Python · scikit-learn · TwitchIO · SQLite</p>
@@ -651,6 +665,7 @@
                     <span class="primary">Python</span>
                     <span class="primary">R</span>
                     <span class="primary">SQL</span>
+                    <span>Julia</span>
                     <span>PostgreSQL</span>
                     <span>SQLite</span>
                 </dd>
