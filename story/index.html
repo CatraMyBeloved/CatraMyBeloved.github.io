@@ -1,0 +1,634 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Full Story · Ole Stein</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+    <style>
+        *, *::before, *::after {
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg: #faf6f1;
+            --bg-warm: #f5efe8;
+            --ink: #2d2a26;
+            --muted: #5f5a54;
+            --accent: #d9480f;
+            --accent-soft: #e8613d;
+            --accent-pale: #fff0e6;
+            --line: #d0c1b4;
+            --serif: 'Lora', Georgia, 'Times New Roman', serif;
+            --sans: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            margin: 0;
+            background: var(--bg);
+            color: var(--ink);
+            font-family: var(--sans);
+            font-size: 18px;
+            line-height: 1.7;
+        }
+
+        a {
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        /* Header */
+        .site-header {
+            position: sticky;
+            top: 0;
+            background: rgba(250, 246, 241, 0.95);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(45, 42, 38, 0.1);
+            z-index: 100;
+        }
+
+        .header-inner {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 16px 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .back-link {
+            font-size: 14px;
+            font-weight: 600;
+            letter-spacing: 0.02em;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .back-link::before {
+            content: "←";
+        }
+
+        .chapter-nav {
+            display: flex;
+            gap: 24px;
+            font-size: 13px;
+            color: var(--muted);
+        }
+
+        .chapter-nav a {
+            color: var(--muted);
+            transition: color 0.2s;
+        }
+
+        .chapter-nav a:hover {
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        /* Hero */
+        .hero {
+            max-width: 720px;
+            margin: 0 auto;
+            padding: 80px 24px 60px;
+            text-align: center;
+        }
+
+        .hero h1 {
+            font-family: var(--serif);
+            font-size: clamp(36px, 6vw, 52px);
+            font-weight: 400;
+            line-height: 1.2;
+            margin: 0 0 20px;
+            letter-spacing: -0.01em;
+        }
+
+        .hero .subtitle {
+            font-size: 20px;
+            color: var(--muted);
+            margin: 0;
+            font-style: italic;
+        }
+
+        .hero-line {
+            width: 60px;
+            height: 2px;
+            background: var(--accent);
+            margin: 40px auto 0;
+        }
+
+        /* Main content */
+        .content {
+            max-width: 680px;
+            margin: 0 auto;
+            padding: 0 24px 100px;
+        }
+
+        /* Chapters */
+        .chapter {
+            margin-bottom: 80px;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeUp 0.6s ease forwards;
+        }
+
+        .chapter:nth-child(1) { animation-delay: 0.1s; }
+        .chapter:nth-child(2) { animation-delay: 0.15s; }
+        .chapter:nth-child(3) { animation-delay: 0.2s; }
+        .chapter:nth-child(4) { animation-delay: 0.25s; }
+        .chapter:nth-child(5) { animation-delay: 0.3s; }
+        .chapter:nth-child(6) { animation-delay: 0.35s; }
+        .chapter:nth-child(7) { animation-delay: 0.4s; }
+
+        @keyframes fadeUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .chapter-header {
+            margin-bottom: 28px;
+            padding-bottom: 16px;
+            border-bottom: 1px solid var(--line);
+        }
+
+        .chapter-number {
+            font-size: 13px;
+            font-weight: 600;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--accent);
+            margin-bottom: 8px;
+        }
+
+        .chapter h2 {
+            font-family: var(--serif);
+            font-size: clamp(26px, 4vw, 32px);
+            font-weight: 400;
+            margin: 0;
+            line-height: 1.3;
+        }
+
+        .chapter p {
+            margin: 0 0 20px;
+        }
+
+        .chapter p:last-child {
+            margin-bottom: 0;
+        }
+
+        /* Pull quotes */
+        .pull-quote {
+            margin: 40px 0;
+            padding: 0 0 0 24px;
+            border-left: 3px solid var(--accent);
+            font-family: var(--serif);
+            font-size: 22px;
+            font-style: italic;
+            line-height: 1.5;
+            color: var(--ink);
+        }
+
+        /* Aside / margin note style */
+        .aside {
+            background: var(--accent-pale);
+            padding: 20px 24px;
+            border-radius: 6px;
+            margin: 32px 0;
+            font-size: 16px;
+        }
+
+        .aside-label {
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--accent);
+            margin-bottom: 8px;
+        }
+
+        .aside p {
+            margin: 0;
+            color: var(--muted);
+        }
+
+        /* Project mentions */
+        .project-mention {
+            background: #fff;
+            border: 1px solid var(--line);
+            border-radius: 8px;
+            padding: 24px;
+            margin: 32px 0;
+        }
+
+        .project-mention h4 {
+            font-size: 18px;
+            margin: 0 0 8px;
+            font-weight: 600;
+        }
+
+        .project-mention p {
+            margin: 0 0 12px;
+            font-size: 16px;
+            color: var(--muted);
+        }
+
+        .project-mention .stack {
+            font-size: 14px;
+            color: var(--muted);
+        }
+
+        .project-mention .stack span {
+            font-weight: 600;
+            color: var(--ink);
+        }
+
+        .project-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            font-size: 14px;
+            font-weight: 600;
+            margin-top: 12px;
+        }
+
+        .project-link::after {
+            content: "→";
+        }
+
+        /* Skills grid */
+        .skills-compact {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 24px;
+            margin: 32px 0;
+        }
+
+        .skill-group h4 {
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: var(--accent);
+            margin: 0 0 12px;
+        }
+
+        .skill-group ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        .skill-group li {
+            font-size: 15px;
+            padding: 4px 0;
+            color: var(--muted);
+        }
+
+        .skill-group li.primary {
+            color: var(--ink);
+            font-weight: 500;
+        }
+
+        /* Values */
+        .values-list {
+            margin: 32px 0;
+        }
+
+        .value-item {
+            padding: 20px 0;
+            border-bottom: 1px solid var(--line);
+        }
+
+        .value-item:last-child {
+            border-bottom: none;
+        }
+
+        .value-item h4 {
+            font-family: var(--serif);
+            font-size: 20px;
+            font-weight: 600;
+            margin: 0 0 8px;
+            color: var(--ink);
+        }
+
+        .value-item p {
+            margin: 0;
+            color: var(--muted);
+            font-size: 16px;
+        }
+
+        /* Footer */
+        .story-footer {
+            max-width: 680px;
+            margin: 0 auto;
+            padding: 60px 24px 80px;
+            border-top: 1px solid var(--line);
+            text-align: center;
+        }
+
+        .story-footer h3 {
+            font-family: var(--serif);
+            font-size: 28px;
+            font-weight: 400;
+            margin: 0 0 16px;
+        }
+
+        .story-footer > p {
+            color: var(--muted);
+            margin: 0 0 32px;
+        }
+
+        .contact-links {
+            display: flex;
+            justify-content: center;
+            gap: 32px;
+            margin-bottom: 48px;
+            flex-wrap: wrap;
+        }
+
+        .contact-links a {
+            font-weight: 600;
+        }
+
+        .closing-quote {
+            font-family: var(--serif);
+            font-style: italic;
+            font-size: 17px;
+            line-height: 1.7;
+            color: var(--muted);
+            max-width: 500px;
+            margin: 0 auto 24px;
+        }
+
+        .closing-quote cite {
+            display: block;
+            margin-top: 12px;
+            font-style: normal;
+            font-family: var(--sans);
+            font-size: 13px;
+        }
+
+        .copyright {
+            font-size: 14px;
+            color: var(--muted);
+            margin-top: 40px;
+        }
+
+        /* Responsive */
+        @media (max-width: 640px) {
+            .chapter-nav {
+                display: none;
+            }
+
+            .hero {
+                padding: 60px 24px 40px;
+            }
+
+            .chapter {
+                margin-bottom: 60px;
+            }
+
+            .pull-quote {
+                font-size: 19px;
+                margin: 32px 0;
+            }
+
+            .contact-links {
+                flex-direction: column;
+                gap: 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<header class="site-header">
+    <div class="header-inner">
+        <a href="/" class="back-link">Portfolio</a>
+        <nav class="chapter-nav">
+            <a href="#why">Why</a>
+            <a href="#discovery">Discovery</a>
+            <a href="#la-palma">La Palma</a>
+            <a href="#alps">Alps</a>
+            <a href="#research">Research</a>
+            <a href="#toolkit">Toolkit</a>
+            <a href="#values">Values</a>
+        </nav>
+    </div>
+</header>
+
+<section class="hero">
+    <h1>The Full Story</h1>
+    <p class="subtitle">My journey through data, science, and the world in general</p>
+    <div class="hero-line"></div>
+</section>
+
+<main class="content">
+
+    <article id="why" class="chapter">
+        <header class="chapter-header">
+            <div class="chapter-number">Chapter 1</div>
+            <h2>Why This Work</h2>
+        </header>
+
+        <p>As many others do, I believe that climate change and our impact on the environment is one of the biggest challenges humanity is facing. In my opinion, if humanity is to continue, we will have to protect and conserve nature wherever we can. The idea of spending my life optimizing profit margins for a company doesn't interest me. I want to contribute to science for science's sake, deepen our understanding of the world because we can and are curious.</p>
+
+        <p>I myself am endlessly curious about how the world works. I lose myself in Wikipedia rabbit holes, or write climate simulations because I always wanted to learn how ODE solvers work. All of these topics are fascinating to me, and I love sharing that with others. I spend at least a little time every day with friends, be it online or in person.</p>
+
+        <div class="pull-quote">
+            I believe that the world should be better than it is right now, and I think the best I can help with that is through what I'm good at: Data Science.
+        </div>
+
+        <p>I want to be as kind and open at work as I am with my friends. I want to care about people, and show that openly.</p>
+    </article>
+
+    <article id="discovery" class="chapter">
+        <header class="chapter-header">
+            <div class="chapter-number">Chapter 2</div>
+            <h2>The Discovery</h2>
+        </header>
+
+        <p>In university, I took an introductory Python course. It clicked immediately for me. Programming just made sense, I could see it all inside of my head. We had a brief section about data analysis, and I found it absolutely fascinating. The math, the statistics, the models, I love all of it. Finding stuff that was invisible before.</p>
+
+        <p>I've played Overwatch since its release in 2016, sometimes competitively. I knew about the Overwatch League (Overwatch's Esport) stats lab and talked to my professor about it. We designed a small task together for the rest of the course, and it was still part of the material when I left university.</p>
+
+        <p>This was my first real contact with "proper" analysis. Once I got around to playing with the actual data, I loved being able to show stuff like "the amount of healing doesn't matter statistically at all in this team composition, but matters a lot in this one." Feelings you had as a player, represented in the numbers.</p>
+
+        <div class="pull-quote">
+            Finding my passion in data analysis was huge for me, and I am still thankful to my professors for supporting that passion during my time in university.
+        </div>
+    </article>
+
+    <article id="la-palma" class="chapter">
+        <header class="chapter-header">
+            <div class="chapter-number">Chapter 3</div>
+            <h2>La Palma</h2>
+        </header>
+
+        <p>After that first project, I wanted to try something more ambitious. I'm fascinated by almost all scientific disciplines, and a big fan of aerospace operations. Because of this, I decided to learn geospatial data analysis using satellite imagery. As a cool event to study, I chose the 2021 La Palma volcanic eruption. Something relevant to many disciplines, and where there was actually something to <em>see</em>.</p>
+
+        <div class="project-mention">
+            <h4>Volcanic Recovery Analysis</h4>
+            <p>Sentinel imagery analysis of vegetation recovery patterns using NDVI indices, DEM data, and unsupervised clustering to map recovery zones.</p>
+            <p class="stack"><span>Stack:</span> Python · rasterio · geopandas · scikit-learn</p>
+            <a href="https://github.com/CatraMyBeloved/volcano-recover-analysis" target="_blank" rel="noopener" class="project-link">View repository</a>
+        </div>
+
+        <p>I started with raw Sentinel satellite imagery and taught myself rasterio workflows from scratch through tutorials. The trickiest part was integrating DEM data: different formats, mismatched resolutions, alignment issues everywhere. Building that reprojection workflow piece by piece took a while, but finally seeing vegetation indices plotted in 3D alongside elevation was amazing.</p>
+    </article>
+
+    <article id="alps" class="chapter">
+        <header class="chapter-header">
+            <div class="chapter-number">Chapter 4</div>
+            <h2>The Alps Project</h2>
+        </header>
+
+        <p>Not everything worked out the way I wanted it to. My next plan was to study shifts in species abundance in the German Alps, a place I spent time as a kid on holidays, hiking from hut to hut. The idea was to correlate observation data from GBIF with climate variables from ERA5. I couldn't find any papers doing what I had in mind, so it would have been genuinely new.</p>
+
+        <p>I got the data, but normalization killed the project. The number of observations reported overall kept growing year over year, so it was hard to tell if a species was actually declining or just being reported less. The Alps aren't densely populated either, so there was a lot of variance. I tried adjusting for local observation growth, general growth, number of independent contributors. Nothing worked cleanly. Species that should have been stable according to literature varied wildly in the data. Declining ones stayed flat.</p>
+
+        <p>It was my second project ever. I'd love to revisit it someday with better methods.</p>
+    </article>
+
+    <article id="research" class="chapter">
+        <header class="chapter-header">
+            <div class="chapter-number">Chapter 5</div>
+            <h2>Toward Research</h2>
+        </header>
+
+        <p>I've known for a while that I want to work at a public research institute. Contributing to humanity's collected understanding of the world around us is a dream of mine. Their missions are exactly what I would want to work towards, at places like the AWI (Alfred Wegener Institute) or the Helmholtz Center.</p>
+
+        <p>In 2024, I was accepted for an internship with the data science support group at the AWI. I couldn't attend because it conflicted with my exams and study plans at the time. I didn't know yet that I would drop out, but that conversation confirmed my passion for this field. I still regret not taking the opportunity, but I hope to have another chance at scientific work in the future.</p>
+
+        <div class="project-mention">
+            <h4>Arctic Ice Extent Forecasting</h4>
+            <p>LSTM models for daily, weekly, and monthly sea ice predictions using ERA5 reanalysis and NSIDC data with spatial aggregation in PostGIS.</p>
+            <p class="stack"><span>Stack:</span> Python · xarray · PostgreSQL/PostGIS · PyTorch</p>
+            <a href="https://github.com/CatraMyBeloved/arctic-ice-extent" target="_blank" rel="noopener" class="project-link">View repository</a>
+        </div>
+
+        <div class="pull-quote">
+            I'm not sure where my path is going, but I will do my best to ensure I end up where I want to be.
+        </div>
+
+        <p>While still lacking the standard credentials, I want to make sure my skills are up to par for a role like the one I'm envisioning. This project is how I am making sure that I am capable in climate and earth science research.</p>
+    </article>
+
+    <article id="toolkit" class="chapter">
+        <header class="chapter-header">
+            <div class="chapter-number">Chapter 6</div>
+            <h2>The Toolkit</h2>
+        </header>
+
+        <p>Every project teaches me something new. I lean toward open-source tools popular in the scientific community. While my work is not in the same shape, I aim to keep the same level of accuracy and precision.</p>
+
+        <div class="skills-compact">
+            <div class="skill-group">
+                <h4>Languages</h4>
+                <ul>
+                    <li class="primary">Python</li>
+                    <li class="primary">R</li>
+                    <li class="primary">SQL</li>
+                    <li>Julia</li>
+                </ul>
+            </div>
+            <div class="skill-group">
+                <h4>Machine Learning</h4>
+                <ul>
+                    <li class="primary">PyTorch</li>
+                    <li>LSTMs / RNNs</li>
+                    <li>Random Forests</li>
+                    <li>Clustering</li>
+                </ul>
+            </div>
+            <div class="skill-group">
+                <h4>Geospatial</h4>
+                <ul>
+                    <li class="primary">rasterio</li>
+                    <li class="primary">geopandas</li>
+                    <li class="primary">PostGIS</li>
+                    <li>QGIS</li>
+                </ul>
+            </div>
+            <div class="skill-group">
+                <h4>Data Engineering</h4>
+                <ul>
+                    <li class="primary">pandas / xarray</li>
+                    <li>PostgreSQL</li>
+                    <li>Parquet</li>
+                    <li>ETL pipelines</li>
+                </ul>
+            </div>
+        </div>
+    </article>
+
+    <article id="values" class="chapter">
+        <header class="chapter-header">
+            <div class="chapter-number">Chapter 7</div>
+            <h2>What Matters Most</h2>
+        </header>
+
+        <p>These are the roots I keep coming back to. They represent the work I want to do, and the world I want to live in.</p>
+
+        <div class="values-list">
+            <div class="value-item">
+                <h4>Curiosity</h4>
+                <p>I ask a lot of questions and follow them wherever they lead. Remote sensing, esports, climate data, it doesn't matter. If it's interesting, I want to understand it.</p>
+            </div>
+            <div class="value-item">
+                <h4>Community</h4>
+                <p>The problems worth solving are too big for any one person. I'd rather build something useful with others than chase achievements alone.</p>
+            </div>
+            <div class="value-item">
+                <h4>Kindness</h4>
+                <p>Good work happens when people feel safe enough to be honest. I care about creating that space, both for myself and for the people I work with.</p>
+            </div>
+            <div class="value-item">
+                <h4>Science</h4>
+                <p>We'll never fully understand the world, but trying to gets us closer to helping each other and our planet. Data is one way I try.</p>
+            </div>
+            <div class="value-item">
+                <h4>Impact</h4>
+                <p>I want the things I build to matter to someone. Research, communities, creative projects. Something larger than just me.</p>
+            </div>
+        </div>
+    </article>
+
+</main>
+
+<footer class="story-footer">
+    <h3>Let's Connect</h3>
+    <p>If you feel like reaching out, I love talking about all things data, science, or art.</p>
+
+    <div class="contact-links">
+        <a href="mailto:ole.stein.ctr@outlook.com">ole.stein.ctr@outlook.com</a>
+        <a href="https://github.com/CatraMyBeloved" target="_blank" rel="noopener">GitHub</a>
+        <span style="color: var(--muted);">Discord: <code style="background: var(--accent-pale); padding: 2px 6px; border-radius: 3px;">derstein</code></span>
+    </div>
+
+    <blockquote class="closing-quote">
+        "Medicine, law, business, engineering—these are noble pursuits and necessary to sustain life. But poetry, beauty, romance, love—these are what we stay alive for."
+        <cite>— Robin Williams, Dead Poets Society</cite>
+    </blockquote>
+
+    <p class="copyright">© <span id="year"></span> Ole Stein · <a href="/">Back to portfolio</a></p>
+</footer>
+
+<script>
+    document.getElementById('year').textContent = new Date().getFullYear();
+</script>
+
+</body>
+</html>
