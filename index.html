@@ -447,7 +447,6 @@
         .quote-break{
             margin:0;
             padding:28px 0;
-            border-top:1px solid var(--line);
             border-bottom:1px solid var(--line);
             text-align:center;
             font-style:italic;
@@ -461,6 +460,28 @@
             font-style:normal;
             font-size:13px;
         }
+        .quote-break .break-text{display:block;transition:opacity .35s ease;}
+        .quote-break .break-text.fade{opacity:0;}
+        .quote-break .break-nav{
+            display:flex;
+            justify-content:center;
+            align-items:center;
+            gap:10px;
+            margin-top:10px;
+        }
+        .quote-break .break-dots{
+            display:flex;
+            gap:6px;
+            align-items:center;
+        }
+        .quote-break .break-dot{
+            width:5px;height:5px;
+            border-radius:50%;
+            background:var(--line);
+            transition:background .2s;
+            cursor:pointer;
+        }
+        .quote-break .break-dot.active{background:var(--accent);}
         .quote-rotator{position:relative;}
         .closing-quote{transition:opacity .35s ease;}
         .closing-quote.fade{opacity:0;}
@@ -472,15 +493,16 @@
         }
         .quote-btn{
             background:none;
-            border:1px solid var(--line);
-            color:var(--muted);
-            border-radius:var(--radius);
-            padding:4px 10px;
+            border:none;
+            color:var(--line);
+            padding:4px 6px;
             cursor:pointer;
-            font-size:14px;
-            transition:border-color .2s,color .2s;
+            font-size:0;
+            line-height:1;
+            transition:color .2s;
         }
-        .quote-btn:hover{border-color:var(--accent);color:var(--accent);}
+        .quote-btn:hover{color:var(--accent);}
+        .quote-btn svg{width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;}
         .quote-dots{display:flex;gap:6px;align-items:center;}
         .quote-dot{
             width:6px;height:6px;
@@ -811,9 +833,9 @@
             <cite class="quote-cite"></cite>
         </blockquote>
         <nav class="quote-nav" aria-label="Quote navigation">
-            <button class="quote-btn" id="quote-prev" aria-label="Previous quote">&#8592;</button>
+            <button class="quote-btn" id="quote-prev" aria-label="Previous quote"><svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg></button>
             <span class="quote-dots"></span>
-            <button class="quote-btn" id="quote-next" aria-label="Next quote">&#8594;</button>
+            <button class="quote-btn" id="quote-next" aria-label="Next quote"><svg viewBox="0 0 24 24"><polyline points="9 6 15 12 9 18"/></svg></button>
         </nav>
     </div>
 </footer>
@@ -868,13 +890,76 @@
 
             var pool = shuffle(QUOTES);
             var breaks = document.querySelectorAll('[data-quote-break]');
+            var BREAK_SIZE = 3;
 
-            breaks.forEach(function(el, i) {
-                var q = pool[i];
-                el.innerHTML = '\u201c' + q.text + '\u201d<cite>\u2014 ' + q.cite + '</cite>';
+            // Measure the tallest quote in a set and lock the container height
+            function lockHeight(container, textEl, quotes, render) {
+                var maxH = 0;
+                quotes.forEach(function(q) {
+                    render(textEl, q);
+                    var h = textEl.offsetHeight;
+                    if (h > maxH) maxH = h;
+                });
+                textEl.style.minHeight = maxH + 'px';
+            }
+
+            breaks.forEach(function(el, idx) {
+                var quotes = pool.splice(0, BREAK_SIZE);
+                var cur = 0;
+
+                var chevronL = '<svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>';
+                var chevronR = '<svg viewBox="0 0 24 24"><polyline points="9 6 15 12 9 18"/></svg>';
+                el.innerHTML = '<span class="break-text"></span>'
+                    + '<div class="break-nav">'
+                    + '<button class="quote-btn break-prev" aria-label="Previous quote">' + chevronL + '</button>'
+                    + '<span class="break-dots"></span>'
+                    + '<button class="quote-btn break-next" aria-label="Next quote">' + chevronR + '</button>'
+                    + '</div>';
+                var textEl = el.querySelector('.break-text');
+                var dotsEl = el.querySelector('.break-dots');
+
+                quotes.forEach(function(_, i) {
+                    var d = document.createElement('span');
+                    d.className = 'break-dot' + (i === 0 ? ' active' : '');
+                    d.addEventListener('click', function() { goToBreak(i); resetBreakTimer(); });
+                    dotsEl.appendChild(d);
+                });
+
+                el.querySelector('.break-prev').addEventListener('click', function() { goToBreak(cur - 1); resetBreakTimer(); });
+                el.querySelector('.break-next').addEventListener('click', function() { goToBreak(cur + 1); resetBreakTimer(); });
+
+                function renderBreak(el, q) {
+                    el.innerHTML = '\u201c' + q.text + '\u201d<cite>\u2014 ' + q.cite + '</cite>';
+                }
+
+                function showBreak(i, animate) {
+                    if (animate) textEl.classList.add('fade');
+                    setTimeout(function() {
+                        renderBreak(textEl, quotes[i]);
+                        dotsEl.querySelectorAll('.break-dot').forEach(function(d, j) {
+                            d.classList.toggle('active', j === i);
+                        });
+                        if (animate) textEl.classList.remove('fade');
+                    }, animate ? 350 : 0);
+                }
+
+                function goToBreak(i) {
+                    cur = (i + quotes.length) % quotes.length;
+                    showBreak(cur, true);
+                }
+
+                var breakTimer;
+                function resetBreakTimer() {
+                    clearInterval(breakTimer);
+                    breakTimer = setInterval(function() { goToBreak(cur + 1); }, 8000);
+                }
+
+                lockHeight(el, textEl, quotes, renderBreak);
+                showBreak(0, false);
+                resetBreakTimer();
             });
 
-            var footerPool = pool.slice(breaks.length);
+            var footerPool = pool;
             var current = 0;
             var timer;
 
@@ -890,16 +975,22 @@
                 });
             }
 
+            function renderFooter(bq, q) {
+                bq.querySelector('.quote-text').textContent = '\u201c' + q.text + '\u201d';
+                bq.querySelector('.quote-cite').innerHTML = '\u2014 ' + q.cite;
+            }
+
+            var bqEl = document.querySelector('.closing-quote');
+            lockHeight(bqEl.parentNode, bqEl, footerPool, renderFooter);
+
             function show(idx, animate) {
-                var bq = document.querySelector('.closing-quote');
-                if (animate) bq.classList.add('fade');
+                if (animate) bqEl.classList.add('fade');
                 setTimeout(function() {
-                    document.querySelector('.quote-text').textContent = '\u201c' + footerPool[idx].text + '\u201d';
-                    document.querySelector('.quote-cite').innerHTML = '\u2014 ' + footerPool[idx].cite;
+                    renderFooter(bqEl, footerPool[idx]);
                     document.querySelectorAll('.quote-dot').forEach(function(d, i) {
                         d.classList.toggle('active', i === idx);
                     });
-                    if (animate) bq.classList.remove('fade');
+                    if (animate) bqEl.classList.remove('fade');
                 }, animate ? 350 : 0);
             }
 
