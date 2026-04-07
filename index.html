@@ -444,6 +444,52 @@
             font-style:normal;
             font-size:13px;
         }
+        .quote-break{
+            margin:0;
+            padding:28px 0;
+            border-top:1px solid var(--line);
+            border-bottom:1px solid var(--line);
+            text-align:center;
+            font-style:italic;
+            font-size:15px;
+            line-height:1.7;
+            color:var(--muted);
+        }
+        .quote-break cite{
+            display:block;
+            margin-top:8px;
+            font-style:normal;
+            font-size:13px;
+        }
+        .quote-rotator{position:relative;}
+        .closing-quote{transition:opacity .35s ease;}
+        .closing-quote.fade{opacity:0;}
+        .quote-nav{
+            display:flex;
+            align-items:center;
+            gap:10px;
+            margin-top:12px;
+        }
+        .quote-btn{
+            background:none;
+            border:1px solid var(--line);
+            color:var(--muted);
+            border-radius:var(--radius);
+            padding:4px 10px;
+            cursor:pointer;
+            font-size:14px;
+            transition:border-color .2s,color .2s;
+        }
+        .quote-btn:hover{border-color:var(--accent);color:var(--accent);}
+        .quote-dots{display:flex;gap:6px;align-items:center;}
+        .quote-dot{
+            width:6px;height:6px;
+            border-radius:50%;
+            background:var(--line);
+            transition:background .2s;
+            cursor:pointer;
+        }
+        .quote-dot.active{background:var(--accent);}
         footer h2::after{
             display:none;
         }
@@ -541,6 +587,8 @@
         </dl>
     </section>
 
+    <div class="quote-break" data-quote-break></div>
+
     <section id="current">
         <div class="section-header-with-status">
             <h2>Current Expedition</h2>
@@ -629,6 +677,8 @@
         </ol>
     </section>
 
+    <div class="quote-break" data-quote-break></div>
+
     <section id="lab">
         <h2>Lab Notes</h2>
         <p class="section-intro">
@@ -668,6 +718,8 @@
             </li>
         </ul>
     </section>
+
+    <div class="quote-break" data-quote-break></div>
 
     <section id="toolkit">
         <h2>Toolkit</h2>
@@ -753,10 +805,17 @@
         <li>GitHub · <a href="https://github.com/CatraMyBeloved" target="_blank" rel="noopener">github.com/CatraMyBeloved</a></li>
     </ul>
     <p>© <span id="year"></span> Ole Stein</p>
-    <blockquote class="closing-quote">
-        "Medicine, law, business, engineering — these are noble pursuits and necessary to sustain life. But poetry, beauty, romance, love — these are what we stay alive for."
-        <cite>— Robin Williams, <em>Dead Poets Society</em></cite>
-    </blockquote>
+    <div class="quote-rotator">
+        <blockquote class="closing-quote">
+            <span class="quote-text"></span>
+            <cite class="quote-cite"></cite>
+        </blockquote>
+        <nav class="quote-nav" aria-label="Quote navigation">
+            <button class="quote-btn" id="quote-prev" aria-label="Previous quote">&#8592;</button>
+            <span class="quote-dots"></span>
+            <button class="quote-btn" id="quote-next" aria-label="Next quote">&#8594;</button>
+        </nav>
+    </div>
 </footer>
 
 <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
@@ -775,6 +834,92 @@
                 btn.textContent = isOpen ? 'Read more' : 'Show less';
             });
         });
+
+        // Rotating quotes
+        (function() {
+            var QUOTES = [
+                { text: "Medicine, law, business, engineering \u2014 these are noble pursuits and necessary to sustain life. But poetry, beauty, romance, love \u2014 these are what we stay alive for.", cite: "Robin Williams, <em>Dead Poets Society</em>" },
+                { text: "Copy heart, copy bracelet.", cite: "Mission Control, Artemis 2" },
+                { text: "Integrity and Carroll, loud and clear.", cite: "Mission Control, Artemis 2" },
+                { text: "Give a man a fire and he\u2019s warm for a day, but set fire to him and he\u2019s warm for the rest of his life.", cite: "Terry Pratchett" },
+                { text: "Wisdom comes from experience. Experience is often a result of lack of wisdom.", cite: "Terry Pratchett" },
+                { text: "Kindred spirits are not so scarce as I used to think. It\u2019s splendid to find out there are so many of them in the world.", cite: "L.M. Montgomery, <em>Anne of Green Gables</em>" },
+                { text: "Because when you are imagining, you might as well imagine something worth while.", cite: "L.M. Montgomery, <em>Anne of Green Gables</em>" },
+                { text: "The only thing that matters is what you choose to be now.", cite: "Po, <em>Kung Fu Panda 2</em>" },
+                { text: "For we put the thought of all that we love into all that we make.", cite: "J.R.R. Tolkien, <em>The Lord of the Rings</em>" },
+                { text: "All we have to decide is what to do with the time that is given to us.", cite: "Gandalf, <em>The Lord of the Rings</em>" },
+                { text: "I would rather share one lifetime with you than face all the ages of this world alone.", cite: "Arwen, <em>The Lord of the Rings</em>" },
+                { text: "Protection and power are overrated. I think you are very wise to choose happiness and love.", cite: "Uncle Iroh, <em>Avatar: The Last Airbender</em>" },
+                { text: "Painting and magical powers seem very much the same. Sometimes I\u2019m unable to paint a thing.", cite: "Ursula, <em>Kiki\u2019s Delivery Service</em>" },
+                { text: "I thought: I cannot bear this world a moment longer. Then, child, make another.", cite: "Madeline Miller, <em>Circe</em>" },
+                { text: "He does not mean we are not frightened. Only that: we are here. This is what it means to swim in the tide, to walk the earth and feel it touch your feet. This is what it means to be alive.", cite: "Madeline Miller, <em>Circe</em>" },
+                { text: "I wish I could stay in this moment forever. I guess I actually can now, but then it wouldn\u2019t be a moment.", cite: "Max Caulfield, <em>Life is Strange</em>" },
+                { text: "Dude, suckin\u2019 at somethin\u2019 is the first step towards bein\u2019 sorta good at somethin\u2019.", cite: "Jake the Dog, <em>Adventure Time</em>" }
+            ];
+
+            function shuffle(arr) {
+                var a = arr.slice();
+                for (var i = a.length - 1; i > 0; i--) {
+                    var j = Math.floor(Math.random() * (i + 1));
+                    var t = a[i]; a[i] = a[j]; a[j] = t;
+                }
+                return a;
+            }
+
+            var pool = shuffle(QUOTES);
+            var breaks = document.querySelectorAll('[data-quote-break]');
+
+            breaks.forEach(function(el, i) {
+                var q = pool[i];
+                el.innerHTML = '\u201c' + q.text + '\u201d<cite>\u2014 ' + q.cite + '</cite>';
+            });
+
+            var footerPool = pool.slice(breaks.length);
+            var current = 0;
+            var timer;
+
+            function buildDots() {
+                var container = document.querySelector('.quote-dots');
+                footerPool.forEach(function(_, i) {
+                    var d = document.createElement('span');
+                    d.className = 'quote-dot' + (i === 0 ? ' active' : '');
+                    (function(idx) {
+                        d.addEventListener('click', function() { goTo(idx); resetTimer(); });
+                    })(i);
+                    container.appendChild(d);
+                });
+            }
+
+            function show(idx, animate) {
+                var bq = document.querySelector('.closing-quote');
+                if (animate) bq.classList.add('fade');
+                setTimeout(function() {
+                    document.querySelector('.quote-text').textContent = '\u201c' + footerPool[idx].text + '\u201d';
+                    document.querySelector('.quote-cite').innerHTML = '\u2014 ' + footerPool[idx].cite;
+                    document.querySelectorAll('.quote-dot').forEach(function(d, i) {
+                        d.classList.toggle('active', i === idx);
+                    });
+                    if (animate) bq.classList.remove('fade');
+                }, animate ? 350 : 0);
+            }
+
+            function goTo(idx) {
+                current = (idx + footerPool.length) % footerPool.length;
+                show(current, true);
+            }
+
+            function resetTimer() {
+                clearInterval(timer);
+                timer = setInterval(function() { goTo(current + 1); }, 8000);
+            }
+
+            document.getElementById('quote-prev').addEventListener('click', function() { goTo(current - 1); resetTimer(); });
+            document.getElementById('quote-next').addEventListener('click', function() { goTo(current + 1); resetTimer(); });
+
+            buildDots();
+            show(0, false);
+            resetTimer();
+        })();
     });
 </script>
 </body>
