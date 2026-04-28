@@ -7,7 +7,7 @@ window.QUOTES = [
     {
         text: "Copy heart, copy bracelet.",
         cite: "Mission Control, Artemis 2",
-        remark: "We fly past the moon, and what we send back is the love for our children. Thats humanity."
+        remark: "We fly past the moon, and what we send back is the love for our children. That's humanity."
     },
     {
         text: "Integrity and Carroll, loud and clear.",
