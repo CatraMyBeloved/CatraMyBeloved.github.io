@@ -22,7 +22,7 @@ window.QUOTES = [
     {
         text: "No one is finally dead until the ripples they cause in the world die away, until the clock wound up winds down, until the wine she made has finished its ferment, until the crop they planted is harvested. The span of someone’s life is only the core of their actual existence.",
         cite: "Terry Pratchett, <em>Reaper Man</em>",
-        remark: ""
+        remark: "Our impact, and the world we leave behind, carries us far beyond our end. GNU Terry Pratchett."
     },
     {
         text: "She was also, by the standards of other people, lost. She would not see it like that. She knew where she was, it was just that everywhere else didn’t.",
@@ -32,42 +32,42 @@ window.QUOTES = [
     {
         text: "‘If a thing’s worth doing, it’s worth doing badly,’ said Granny, fleeing into aphorisms, the last refuge of an adult under siege.",
         cite: "Terry Pratchett, <em>Equal Rites</em>",
-        remark: ""
+        remark: "Both a great statement to live by, to learn new things, to suck at things to become good at them, and really funny as anything written by Pratchett."
     },
     {
         text: "He says gods like to see an atheist around. Gives them something to aim at.",
         cite: "Terry Pratchett, <em>Small Gods</em>",
-        remark: ""
+        remark: "Really hope their aim isn't too great."
     },
     {
         text: "Just because you can explain it doesn’t mean it’s not still a miracle.",
         cite: "Terry Pratchett, <em>Small Gods</em>",
-        remark: ""
+        remark: "Most of the time, being able to explain it makes it more of one. All the small things around us, every moment, is incredible in itself."
     },
     {
         text: "Kindred spirits are not so scarce as I used to think. It’s splendid to find out there are so many of them in the world.",
         cite: "L.M. Montgomery, <em>Anne of Green Gables</em>",
-        remark: ""
+        remark: "A wonderful experience that I had to make myself to believe."
     },
     {
         text: "Because when you are imagining, you might as well imagine something worth while.",
         cite: "L.M. Montgomery, <em>Anne of Green Gables</em>",
-        remark: ""
+        remark: "Your imagination is the one thing you have full control over. It's best to use it."
     },
     {
         text: "For we put the thought of all that we love into all that we make.",
         cite: "J.R.R. Tolkien, <em>The Lord of the Rings</em>",
-        remark: ""
+        remark: "I love openly and loudly, and it's what guides and moves me every day. I try to follow this principle whenever i can."
     },
     {
         text: "All we have to decide is what to do with the time that is given to us.",
         cite: "Gandalf, <em>The Lord of the Rings</em>",
-        remark: ""
+        remark: "There are many a things that have happened, that shouldn't have. But the only thing we can do is be better the next time."
     },
     {
         text: "I would rather share one lifetime with you than face all the ages of this world alone.",
         cite: "Arwen, <em>The Lord of the Rings</em>",
-        remark: ""
+        remark: "What is life worth without people to make it worth living? Very little, in my opinion."
     },
     {
         text: "Protection and power are overrated. I think you are very wise to choose happiness and love.",
@@ -77,7 +77,7 @@ window.QUOTES = [
     {
         text: "Painting and magical powers seem very much the same. Sometimes I’m unable to paint a thing.",
         cite: "Ursula, <em>Kiki’s Delivery Service</em>",
-        remark: ""
+        remark: "Not every day can go well, not every task can be solved immediately. Even if you're unable to paint right now, doesn't mean you're not a painter."
     },
     {
         text: "I thought: I cannot bear this world a moment longer. Then, child, make another.",
@@ -87,16 +87,16 @@ window.QUOTES = [
     {
         text: "He does not mean we are not frightened. Only that: we are here. This is what it means to swim in the tide, to walk the earth and feel it touch your feet. This is what it means to be alive.",
         cite: "Madeline Miller, <em>Circe</em>",
-        remark: ""
+        remark: "Being alive is scary as all hell, and still doing it, and being present and aware, is what makes the difference."
     },
     {
         text: "I wish I could stay in this moment forever. I guess I actually can now, but then it wouldn’t be a moment.",
         cite: "Max Caulfield, <em>Life is Strange</em>",
-        remark: ""
+        remark: "Beautiful moments and times are tempting, more than any piece of gold. But they are just that, moments. If they weren't, they would lose their meaning."
     },
     {
         text: "Dude, suckin’ at somethin’ is the first step towards bein’ sorta good at somethin’.",
         cite: "Jake the Dog, <em>Adventure Time</em>",
-        remark: ""
+        remark: "Always, always try new things. There is no way around sucking at it, and the sooner one realizes that, the sooner one becomes free in their pursuits."
     }
 ];
