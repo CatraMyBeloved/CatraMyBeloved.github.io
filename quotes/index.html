@@ -147,12 +147,21 @@
         .quote-item cite em { font-style: italic; }
 
         .quote-item .remark {
-            margin-top: 28px;
+            margin: 32px 0 0;
             padding-left: 24px;
-            font-size: 15px;
-            line-height: 1.65;
-            color: var(--muted);
-            max-width: 56ch;
+            font-size: 16px;
+            line-height: 1.7;
+            color: var(--ink);
+            max-width: 58ch;
+        }
+
+        .quote-item .remark::before {
+            content: "";
+            display: block;
+            width: 32px;
+            height: 1px;
+            background: var(--accent);
+            margin-bottom: 16px;
         }
 
         .quotes-footer {
