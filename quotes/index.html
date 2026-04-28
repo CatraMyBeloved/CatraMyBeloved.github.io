@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quotes · Ole Stein</title>
+    <meta http-equiv="X-Clacks-Overhead" content="GNU Terry Pratchett">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+    <style>
+        *, *::before, *::after { box-sizing: border-box; }
+
+        :root {
+            --bg: #faf6f1;
+            --ink: #2d2a26;
+            --muted: #5f5a54;
+            --accent: #d9480f;
+            --accent-pale: #fff0e6;
+            --line: #d0c1b4;
+            --serif: 'Lora', Georgia, 'Times New Roman', serif;
+            --sans: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+        }
+
+        body {
+            margin: 0;
+            background: var(--bg);
+            color: var(--ink);
+            font-family: var(--sans);
+            font-size: 18px;
+            line-height: 1.7;
+        }
+
+        a {
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        a:hover { text-decoration: underline; }
+
+        .site-header {
+            position: sticky;
+            top: 0;
+            background: rgba(250, 246, 241, 0.95);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(45, 42, 38, 0.1);
+            z-index: 100;
+        }
+
+        .header-inner {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 16px 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .back-link {
+            font-size: 14px;
+            font-weight: 600;
+            letter-spacing: 0.02em;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .back-link::before { content: "\2190"; }
+
+        .hero {
+            max-width: 720px;
+            margin: 0 auto;
+            padding: 96px 24px 60px;
+            text-align: center;
+        }
+
+        .hero h1 {
+            font-family: var(--serif);
+            font-size: clamp(40px, 6vw, 56px);
+            font-weight: 400;
+            line-height: 1.2;
+            margin: 0 0 20px;
+            letter-spacing: -0.01em;
+        }
+
+        .hero .subtitle {
+            font-size: 19px;
+            color: var(--muted);
+            margin: 0;
+            font-style: italic;
+        }
+
+        .hero-line {
+            width: 60px;
+            height: 2px;
+            background: var(--accent);
+            margin: 40px auto 0;
+        }
+
+        .quotes-list {
+            max-width: 640px;
+            margin: 0 auto;
+            padding: 40px 24px 120px;
+        }
+
+        .quote-item {
+            margin: 0;
+            padding: 72px 0;
+            border-bottom: 1px solid var(--line);
+        }
+
+        .quote-item:first-child { padding-top: 40px; }
+        .quote-item:last-child { border-bottom: none; }
+
+        .quote-item .quote-text {
+            font-family: var(--serif);
+            font-style: italic;
+            font-size: clamp(22px, 2.6vw, 26px);
+            line-height: 1.55;
+            color: var(--ink);
+            margin: 0;
+            position: relative;
+            padding-left: 24px;
+        }
+
+        .quote-item .quote-text::before {
+            content: "";
+            position: absolute;
+            left: 0;
+            top: 8px;
+            bottom: 8px;
+            width: 2px;
+            background: var(--accent);
+            opacity: 0.6;
+        }
+
+        .quote-item cite {
+            display: block;
+            margin-top: 24px;
+            padding-left: 24px;
+            font-style: normal;
+            font-size: 14px;
+            color: var(--muted);
+            letter-spacing: 0.02em;
+        }
+
+        .quote-item cite em { font-style: italic; }
+
+        .quote-item .remark {
+            margin-top: 28px;
+            padding-left: 24px;
+            font-size: 15px;
+            line-height: 1.65;
+            color: var(--muted);
+            max-width: 56ch;
+        }
+
+        .quotes-footer {
+            max-width: 640px;
+            margin: 0 auto;
+            padding: 0 24px 80px;
+            text-align: center;
+            font-size: 14px;
+            color: var(--muted);
+        }
+
+        .quotes-footer a { font-weight: 600; }
+
+        @media (max-width: 640px) {
+            .hero { padding: 60px 24px 40px; }
+            .quote-item { padding: 56px 0; }
+        }
+    </style>
+</head>
+<body>
+
+<header class="site-header">
+    <div class="header-inner">
+        <a href="/" class="back-link">Portfolio</a>
+    </div>
+</header>
+
+<section class="hero">
+    <h1>Quotes</h1>
+    <p class="subtitle">Words I keep coming back to</p>
+    <div class="hero-line"></div>
+</section>
+
+<main class="quotes-list" id="quotes-list"></main>
+
+<footer class="quotes-footer">
+    <p>© <span id="year"></span> Ole Stein · <a href="/">Back to portfolio</a></p>
+</footer>
+
+<script src="../quotes.js"></script>
+<script>
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    (function() {
+        var list = document.getElementById('quotes-list');
+        var quotes = window.QUOTES || [];
+
+        quotes.forEach(function(q) {
+            var fig = document.createElement('figure');
+            fig.className = 'quote-item';
+
+            var bq = document.createElement('blockquote');
+            bq.className = 'quote-text';
+            bq.textContent = q.text;
+            fig.appendChild(bq);
+
+            var cite = document.createElement('cite');
+            cite.innerHTML = q.cite;
+            fig.appendChild(cite);
+
+            if (q.remark) {
+                var remark = document.createElement('p');
+                remark.className = 'remark';
+                remark.textContent = q.remark;
+                fig.appendChild(remark);
+            }
+
+            list.appendChild(fig);
+        });
+    })();
+</script>
+
+</body>
+</html>

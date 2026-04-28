@@ -7,6 +7,7 @@
     <meta name="description" content="Ole Stein explores natural and data sciences with curiosity, care, and kindness. Remote sensing, climate forecasting, esports analytics, and community-minded data work.">
     <meta name="color-scheme" content="light">
     <meta name="google-site-verification" content="D2uRDjMzTRCFbjuoBd5DsRM8CeBewX5YkLsP_AoGQ9k" />
+    <meta http-equiv="X-Clacks-Overhead" content="GNU Terry Pratchett">
     <style>
         *,*::before,*::after{box-sizing:border-box}
         :root{
@@ -512,6 +513,14 @@
             cursor:pointer;
         }
         .quote-dot.active{background:var(--accent);}
+        .quote-all-link{
+            display:block;
+            margin-top:10px;
+            font-size:12px;
+            letter-spacing:.04em;
+            color:var(--muted);
+        }
+        .quote-all-link:hover{color:var(--accent);}
         footer h2::after{
             display:none;
         }
@@ -837,10 +846,13 @@
             <span class="quote-dots"></span>
             <button class="quote-btn" id="quote-next" aria-label="Next quote"><svg viewBox="0 0 24 24"><polyline points="9 6 15 12 9 18"/></svg></button>
         </nav>
+        <a href="/quotes/" class="quote-all-link">See all quotes →</a>
     </div>
 </footer>
 
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>
+<script src="quotes.js"></script>
+<script>
     document.getElementById('year').textContent = new Date().getFullYear();
 
     document.addEventListener('DOMContentLoaded', function() {
@@ -859,26 +871,7 @@
 
         // Rotating quotes
         (function() {
-            var QUOTES = [
-                { text: "Medicine, law, business, engineering \u2014 these are noble pursuits and necessary to sustain life. But poetry, beauty, romance, love \u2014 these are what we stay alive for.", cite: "Robin Williams, <em>Dead Poets Society</em>" },
-                { text: "Copy heart, copy bracelet.", cite: "Mission Control, Artemis 2" },
-                { text: "Integrity and Carroll, loud and clear.", cite: "Mission Control, Artemis 2" },
-                { text: "Give a man a fire and he\u2019s warm for a day, but set fire to him and he\u2019s warm for the rest of his life.", cite: "Terry Pratchett" },
-                { text: "Wisdom comes from experience. Experience is often a result of lack of wisdom.", cite: "Terry Pratchett" },
-                { text: "Kindred spirits are not so scarce as I used to think. It\u2019s splendid to find out there are so many of them in the world.", cite: "L.M. Montgomery, <em>Anne of Green Gables</em>" },
-                { text: "Because when you are imagining, you might as well imagine something worth while.", cite: "L.M. Montgomery, <em>Anne of Green Gables</em>" },
-                { text: "The only thing that matters is what you choose to be now.", cite: "Po, <em>Kung Fu Panda 2</em>" },
-                { text: "For we put the thought of all that we love into all that we make.", cite: "J.R.R. Tolkien, <em>The Lord of the Rings</em>" },
-                { text: "All we have to decide is what to do with the time that is given to us.", cite: "Gandalf, <em>The Lord of the Rings</em>" },
-                { text: "I would rather share one lifetime with you than face all the ages of this world alone.", cite: "Arwen, <em>The Lord of the Rings</em>" },
-                { text: "Protection and power are overrated. I think you are very wise to choose happiness and love.", cite: "Uncle Iroh, <em>Avatar: The Last Airbender</em>" },
-                { text: "Painting and magical powers seem very much the same. Sometimes I\u2019m unable to paint a thing.", cite: "Ursula, <em>Kiki\u2019s Delivery Service</em>" },
-                { text: "I thought: I cannot bear this world a moment longer. Then, child, make another.", cite: "Madeline Miller, <em>Circe</em>" },
-                { text: "He does not mean we are not frightened. Only that: we are here. This is what it means to swim in the tide, to walk the earth and feel it touch your feet. This is what it means to be alive.", cite: "Madeline Miller, <em>Circe</em>" },
-                { text: "I wish I could stay in this moment forever. I guess I actually can now, but then it wouldn\u2019t be a moment.", cite: "Max Caulfield, <em>Life is Strange</em>" },
-                { text: "Dude, suckin\u2019 at somethin\u2019 is the first step towards bein\u2019 sorta good at somethin\u2019.", cite: "Jake the Dog, <em>Adventure Time</em>" }
-            ];
-
+            var QUOTES = window.QUOTES || [];
             function shuffle(arr) {
                 var a = arr.slice();
                 for (var i = a.length - 1; i > 0; i--) {
@@ -890,7 +883,7 @@
 
             var pool = shuffle(QUOTES);
             var breaks = document.querySelectorAll('[data-quote-break]');
-            var BREAK_SIZE = 3;
+            var BREAK_SIZE = 5;
 
             // Measure the tallest quote in a set and lock the container height
             function lockHeight(container, textEl, quotes, render) {
@@ -951,8 +944,12 @@
                 var breakTimer;
                 function resetBreakTimer() {
                     clearInterval(breakTimer);
-                    breakTimer = setInterval(function() { goToBreak(cur + 1); }, 8000);
+                    breakTimer = setInterval(function() { goToBreak(cur + 1); }, 12000);
                 }
+                function pauseBreakTimer() { clearInterval(breakTimer); }
+
+                el.addEventListener('mouseenter', pauseBreakTimer);
+                el.addEventListener('mouseleave', resetBreakTimer);
 
                 lockHeight(el, textEl, quotes, renderBreak);
                 showBreak(0, false);
@@ -1001,11 +998,15 @@
 
             function resetTimer() {
                 clearInterval(timer);
-                timer = setInterval(function() { goTo(current + 1); }, 8000);
+                timer = setInterval(function() { goTo(current + 1); }, 12000);
             }
+            function pauseTimer() { clearInterval(timer); }
 
             document.getElementById('quote-prev').addEventListener('click', function() { goTo(current - 1); resetTimer(); });
             document.getElementById('quote-next').addEventListener('click', function() { goTo(current + 1); resetTimer(); });
+
+            bqEl.parentNode.addEventListener('mouseenter', pauseTimer);
+            bqEl.parentNode.addEventListener('mouseleave', resetTimer);
 
             buildDots();
             show(0, false);
