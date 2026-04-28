@@ -57,7 +57,7 @@ window.QUOTES = [
     {
         text: "For we put the thought of all that we love into all that we make.",
         cite: "J.R.R. Tolkien, <em>The Lord of the Rings</em>",
-        remark: "I love openly and loudly, and I try to make sure that comes through in what I build."
+        remark: "I love openly and loudly, and I try to make sure that comes through in whatever I do."
     },
     {
         text: "All we have to decide is what to do with the time that is given to us.",
